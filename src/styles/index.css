@@ -182,7 +182,8 @@ svg {
 
 .device-frame {
   width: min(1180px, 100%);
-  min-height: min(760px, calc(100vh - 28px));
+  height: min(760px, calc(100vh - 28px));
+  min-height: 560px;
   padding: clamp(12px, 2vw, 24px);
   border-radius: 28px;
   border: clamp(10px, 2vw, 22px) solid var(--metal-1);
@@ -200,7 +201,8 @@ svg {
 
 .screen {
   position: relative;
-  min-height: min(690px, calc(100vh - 76px));
+  height: 100%;
+  min-height: 0;
   overflow: hidden;
   border-radius: 14px;
   border: 2px solid rgba(255, 184, 79, 0.3);
@@ -230,7 +232,8 @@ svg {
 .pipboy {
   position: relative;
   z-index: 2;
-  min-height: inherit;
+  height: 100%;
+  min-height: 0;
   padding: clamp(30px, 5vw, 58px) clamp(16px, 3vw, 34px) clamp(18px, 3vw, 28px);
   display: grid;
   grid-template-rows: auto auto minmax(0, 1fr) auto;
@@ -286,7 +289,9 @@ svg {
 
 .panel-window {
   min-height: 0;
-  overflow: auto;
+  overflow-y: auto;
+  overflow-x: hidden;
+  overscroll-behavior: contain;
   scrollbar-color: var(--amber-strong) transparent;
   border: 2px solid var(--line);
   border-inline-color: var(--line-dim);
@@ -503,12 +508,19 @@ svg {
   display: inline-flex;
   align-items: center;
   gap: 8px;
+  min-width: 0;
   border: 1px solid var(--line-dim);
   background: rgba(255, 184, 79, 0.05);
   color: var(--amber-soft);
   text-decoration: none;
   padding: 8px 10px;
   min-height: 40px;
+}
+
+.project-links a span,
+.contact-list a span {
+  min-width: 0;
+  overflow-wrap: anywhere;
 }
 
 .project-links a:hover,
@@ -617,14 +629,11 @@ svg {
   }
 
   .device-frame {
-    min-height: calc(100vh - 16px);
+    height: calc(100vh - 16px);
+    min-height: 0;
     border-width: 10px;
     border-radius: 20px;
     padding: 8px;
-  }
-
-  .screen {
-    min-height: calc(100vh - 52px);
   }
 
   .pipboy {
