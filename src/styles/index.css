@@ -60,7 +60,7 @@ svg {
   position: relative;
   min-height: 100vh;
   overflow-x: hidden;
-  padding: clamp(12px, 3vw, 32px);
+  padding: clamp(8px, 1.6vw, 20px);
   isolation: isolate;
 }
 
@@ -122,10 +122,16 @@ svg {
 }
 
 .boot-panel h1,
-.pip-header h1,
-.dossier-card h2 {
+.pip-header h1 {
   margin: 0;
   font-size: clamp(1.5rem, 4vw, 2.7rem);
+  line-height: 1.08;
+  font-weight: 700;
+}
+
+.dossier-card h2 {
+  margin: 0;
+  font-size: clamp(1.45rem, 3vw, 2.25rem);
   line-height: 1.08;
   font-weight: 700;
 }
@@ -181,12 +187,12 @@ svg {
 }
 
 .device-frame {
-  width: min(1180px, 100%);
-  height: min(760px, calc(100vh - 28px));
+  width: min(1280px, 100%);
+  height: min(820px, calc(100vh - 20px));
   min-height: 560px;
-  padding: clamp(12px, 2vw, 24px);
+  padding: clamp(10px, 1.5vw, 18px);
   border-radius: 28px;
-  border: clamp(10px, 2vw, 22px) solid var(--metal-1);
+  border: clamp(10px, 1.7vw, 20px) solid var(--metal-1);
   border-top-color: #3b372f;
   border-left-color: #20201d;
   border-right-color: #11100e;
@@ -234,10 +240,10 @@ svg {
   z-index: 2;
   height: 100%;
   min-height: 0;
-  padding: clamp(30px, 5vw, 58px) clamp(16px, 3vw, 34px) clamp(18px, 3vw, 28px);
+  padding: clamp(28px, 3vw, 42px) clamp(16px, 2.4vw, 30px) clamp(14px, 2vw, 22px);
   display: grid;
   grid-template-rows: auto auto minmax(0, 1fr) auto;
-  gap: clamp(14px, 2vw, 24px);
+  gap: clamp(10px, 1.35vw, 16px);
 }
 
 .pip-header {
@@ -246,7 +252,7 @@ svg {
   gap: 22px;
   align-items: start;
   border-block: 2px solid var(--line);
-  padding: 14px 0;
+  padding: 10px 0;
 }
 
 .status-cluster {
@@ -276,9 +282,10 @@ svg {
 }
 
 .tab-nav button {
-  min-height: 46px;
-  padding: 8px;
+  min-height: 42px;
+  padding: 7px 8px;
   color: var(--text);
+  font-size: 0.92rem;
 }
 
 .tab-nav button.active {
@@ -295,7 +302,8 @@ svg {
   scrollbar-color: var(--amber-strong) transparent;
   border: 2px solid var(--line);
   border-inline-color: var(--line-dim);
-  padding: clamp(12px, 2vw, 18px);
+  padding: clamp(11px, 1.5vw, 16px);
+  font-size: 0.92rem;
   box-shadow: inset 0 0 80px rgba(0, 0, 0, 0.38);
 }
 
@@ -325,11 +333,11 @@ svg {
 .project-card {
   border: 1px solid var(--line-dim);
   background: rgba(10, 7, 4, 0.72);
-  padding: clamp(14px, 2vw, 20px);
+  padding: clamp(12px, 1.5vw, 17px);
 }
 
 .intro-card {
-  min-height: 260px;
+  min-height: 230px;
 }
 
 .span-two {
@@ -341,13 +349,13 @@ svg {
 .dossier-card p,
 .project-card li,
 .experience-card li {
-  line-height: 1.65;
+  line-height: 1.58;
 }
 
 .lead {
   max-width: 72ch;
   color: var(--amber-soft);
-  font-size: clamp(0.98rem, 2vw, 1.08rem);
+  font-size: clamp(0.92rem, 1.5vw, 0.98rem);
 }
 
 .location-line,
@@ -365,7 +373,7 @@ svg {
 }
 
 .avatar-ring {
-  width: min(220px, 56vw);
+  width: min(190px, 52vw);
   aspect-ratio: 1;
   border: 2px solid var(--line);
   display: grid;
@@ -397,7 +405,7 @@ svg {
 
 .metric-grid div {
   border: 1px solid var(--line-dim);
-  padding: 10px;
+  padding: 8px;
 }
 
 .metric-grid span,
@@ -410,30 +418,30 @@ svg {
 .timeline-item span,
 .experience-card span {
   color: var(--muted);
-  font-size: 0.78rem;
+  font-size: 0.72rem;
   text-transform: uppercase;
 }
 
 .metric-grid strong {
   margin-top: 4px;
   color: var(--green);
-  font-size: 1.1rem;
+  font-size: 1rem;
 }
 
 .tag-cloud {
   display: flex;
   flex-wrap: wrap;
-  gap: 8px;
+  gap: 7px;
 }
 
 .tag-cloud.compact span {
-  font-size: 0.68rem;
-  padding: 5px 7px;
+  font-size: 0.64rem;
+  padding: 4px 7px;
 }
 
 .skill-list {
   display: grid;
-  gap: 18px;
+  gap: 14px;
 }
 
 .skill-row-header,
@@ -463,7 +471,7 @@ svg {
 
 .timeline-list {
   display: grid;
-  gap: 16px;
+  gap: 13px;
 }
 
 .timeline-item {
@@ -475,7 +483,7 @@ svg {
 .project-card h3,
 .experience-card h3 {
   margin: 6px 0 4px;
-  font-size: 1rem;
+  font-size: 0.94rem;
   color: var(--amber-soft);
 }
 
@@ -487,7 +495,7 @@ svg {
 
 .project-list {
   display: grid;
-  gap: 14px;
+  gap: 12px;
 }
 
 .project-head p,
@@ -513,8 +521,9 @@ svg {
   background: rgba(255, 184, 79, 0.05);
   color: var(--amber-soft);
   text-decoration: none;
-  padding: 8px 10px;
-  min-height: 40px;
+  padding: 7px 9px;
+  min-height: 38px;
+  font-size: 0.88rem;
 }
 
 .project-links a span,
@@ -535,25 +544,25 @@ svg {
 
 .project-card ul,
 .experience-card ul {
-  margin: 14px 0;
-  padding-left: 20px;
+  margin: 12px 0;
+  padding-left: 18px;
 }
 
 .contact-list {
   display: grid;
   align-content: start;
-  gap: 10px;
+  gap: 9px;
 }
 
 .contact-list a {
   justify-content: start;
-  min-height: 54px;
+  min-height: 48px;
 }
 
 .signal-card {
-  margin-top: 22px;
+  margin-top: 18px;
   border: 1px solid var(--line);
-  padding: 14px;
+  padding: 12px;
 }
 
 .signal-card span,
