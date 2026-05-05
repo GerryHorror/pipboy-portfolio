@@ -489,13 +489,101 @@ svg {
 
 .quest-layout {
   display: grid;
-  grid-template-columns: minmax(0, 1.6fr) minmax(280px, 0.65fr);
+  grid-template-columns: minmax(260px, 0.55fr) minmax(0, 1.45fr);
+  gap: 14px;
+  min-height: 100%;
+}
+
+.quest-index,
+.quest-detail {
+  min-width: 0;
+}
+
+.quest-index {
+  display: grid;
+  align-content: start;
   gap: 14px;
 }
 
-.project-list {
+.quest-list {
   display: grid;
-  gap: 12px;
+  gap: 8px;
+}
+
+.quest-list button {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: 4px 10px;
+  width: 100%;
+  min-height: 50px;
+  padding: 6px 9px;
+  border: 1px solid var(--line-dim);
+  background: rgba(255, 184, 79, 0.04);
+  color: var(--text);
+  text-align: left;
+  cursor: pointer;
+}
+
+.quest-list button:hover,
+.quest-list button:focus-visible {
+  border-color: var(--amber-soft);
+  background: rgba(255, 184, 79, 0.12);
+  outline: 2px solid rgba(136, 216, 255, 0.62);
+  outline-offset: 2px;
+}
+
+.quest-list button.active {
+  border-color: var(--amber-soft);
+  background: rgba(255, 184, 79, 0.18);
+  box-shadow: inset 4px 0 0 var(--amber-strong);
+}
+
+.quest-list button span {
+  grid-row: 1 / span 2;
+  color: var(--green);
+  font-size: 0.72rem;
+}
+
+.quest-list button strong,
+.quest-list button small {
+  min-width: 0;
+}
+
+.quest-list button strong {
+  color: var(--amber-soft);
+  font-size: 0.9rem;
+}
+
+.quest-list button small {
+  color: var(--green);
+  font-size: 0.72rem;
+  line-height: 1.25;
+}
+
+.quest-index h2 {
+  font-size: clamp(1.3rem, 2vw, 1.55rem);
+}
+
+.quest-detail {
+  display: grid;
+  align-content: start;
+  gap: 16px;
+}
+
+.quest-detail-section {
+  border-top: 1px solid var(--line-dim);
+  padding-top: 12px;
+}
+
+.quest-detail-section ul {
+  margin: 8px 0 0;
+  padding-left: 18px;
+}
+
+.background-archive {
+  border: 1px solid var(--line-dim);
+  background: rgba(255, 184, 79, 0.035);
+  padding: 11px;
 }
 
 .project-head p,
@@ -667,6 +755,10 @@ svg {
   .stats-grid,
   .quest-layout {
     grid-template-columns: 1fr;
+  }
+
+  .quest-layout {
+    min-height: auto;
   }
 
   .span-two {
