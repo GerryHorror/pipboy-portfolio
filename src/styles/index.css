@@ -151,15 +151,13 @@ svg {
 
 .boot-panel {
   width: min(820px, 100%);
-  border: 2px solid var(--line);
-  background:
-    linear-gradient(rgba(255, 184, 79, 0.04), rgba(255, 184, 79, 0.015)),
-    var(--ink);
-  box-shadow:
-    0 0 60px rgba(255, 184, 79, 0.14),
-    inset 0 0 120px rgba(255, 184, 79, 0.08);
   padding: clamp(22px, 5vw, 48px);
-  position: relative;
+}
+
+.boot-skip {
+  position: absolute;
+  bottom: clamp(14px, 2vw, 22px);
+  right: clamp(16px, 2.4vw, 30px);
 }
 
 .boot-identity {
@@ -194,23 +192,6 @@ svg {
   align-items: center;
 }
 
-.boot-panel::before,
-.boot-panel::after {
-  content: "";
-  position: absolute;
-  left: 18px;
-  right: 18px;
-  height: 2px;
-  background: linear-gradient(90deg, transparent, var(--line), transparent);
-}
-
-.boot-panel::before {
-  top: 14px;
-}
-
-.boot-panel::after {
-  bottom: 14px;
-}
 
 .system-label {
   margin: 0 0 8px;
@@ -1060,27 +1041,8 @@ svg {
 /* ─── COLOUR THEMES ───────────────────────────────────────────────── */
 
 /* ── Boot screen overrides ── */
-[data-theme="green"] .boot-panel {
-  background:
-    linear-gradient(rgba(157, 244, 165, 0.04), rgba(157, 244, 165, 0.015)),
-    var(--ink);
-  box-shadow:
-    0 0 60px rgba(157, 244, 165, 0.14),
-    inset 0 0 120px rgba(157, 244, 165, 0.08);
-}
 
 
-[data-theme="pride"] .boot-panel {
-  background:
-    linear-gradient(
-      hsla(var(--pride-hue), 85%, 65%, 0.04),
-      hsla(var(--pride-hue), 85%, 65%, 0.01)
-    ),
-    var(--ink);
-  box-shadow:
-    0 0 60px hsla(var(--pride-hue), 85%, 65%, 0.18),
-    inset 0 0 120px hsla(calc(var(--pride-hue) + 60deg), 85%, 65%, 0.06);
-}
 
 
 /* Green HUD */

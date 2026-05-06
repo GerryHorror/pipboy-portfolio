@@ -127,10 +127,10 @@ export function BootScreen({ muted, onComplete }: BootScreenProps) {
             })}
           </div>
         </div>
-        <button className="primary-command" type="button" onClick={onComplete}>
-          Skip boot
-        </button>
       </div>
+      <button className="primary-command boot-skip" type="button" onClick={onComplete}>
+        Skip boot
+      </button>
     </section>
   );
 }
