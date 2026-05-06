@@ -4,16 +4,30 @@ import { experience, projects } from "../../data/portfolio";
 
 export function QuestsPanel() {
   const [selectedProjectIndex, setSelectedProjectIndex] = useState(0);
+  const [displayIndex, setDisplayIndex] = useState(0);
+  const [collapsed, setCollapsed] = useState(false);
   const detailBodyRef = useRef<HTMLDivElement>(null);
-  const selectedProject = projects[selectedProjectIndex] ?? projects[0];
+  const displayedProject = projects[displayIndex] ?? projects[0];
   const selectedTags = useMemo(
-    () => [...new Set([...selectedProject.stack, ...selectedProject.tags])],
-    [selectedProject],
+    () => [...new Set([...displayedProject.stack, ...displayedProject.tags])],
+    [displayedProject],
   );
 
   useEffect(() => {
+    if (selectedProjectIndex === displayIndex) return;
+    setCollapsed(true);
+    const t = window.setTimeout(() => {
+      setDisplayIndex(selectedProjectIndex);
+      requestAnimationFrame(() => {
+        requestAnimationFrame(() => setCollapsed(false));
+      });
+    }, 220);
+    return () => window.clearTimeout(t);
+  }, [selectedProjectIndex, displayIndex]);
+
+  useEffect(() => {
     detailBodyRef.current?.scrollTo({ top: 0 });
-  }, [selectedProjectIndex]);
+  }, [displayIndex]);
 
   return (
     <article className="quest-layout" aria-labelledby="quests-title">
@@ -53,17 +67,17 @@ export function QuestsPanel() {
         </aside>
       </section>
 
-      <section className="dossier-card quest-detail" aria-live="polite">
+      <section className={`dossier-card quest-detail${collapsed ? " crt-collapse" : ""}`} aria-live="polite">
         <div className="project-head">
           <div>
-            <span className="quest-status">{selectedProject.status}</span>
-            <h3>{selectedProject.title}</h3>
-            <p>{selectedProject.signal}</p>
+            <span className="quest-status">{displayedProject.status}</span>
+            <h3>{displayedProject.title}</h3>
+            <p>{displayedProject.signal}</p>
           </div>
           <div className="project-links">
-            {selectedProject.links.map((link) => (
+            {displayedProject.links.map((link) => (
               <a
-                key={`${selectedProject.title}-${link.label}`}
+                key={`${displayedProject.title}-${link.label}`}
                 href={link.href}
                 target={link.href.startsWith("http") ? "_blank" : undefined}
                 rel={link.href.startsWith("http") ? "noreferrer" : undefined}
@@ -76,12 +90,12 @@ export function QuestsPanel() {
         </div>
 
         <div className="quest-detail-body" ref={detailBodyRef}>
-          <p className="project-summary">{selectedProject.summary}</p>
+          <p className="project-summary">{displayedProject.summary}</p>
 
           <div className="quest-detail-section">
             <p className="system-label">Objectives</p>
             <ul>
-              {selectedProject.highlights.map((highlight) => (
+              {displayedProject.highlights.map((highlight) => (
                 <li key={highlight}>{highlight}</li>
               ))}
             </ul>
@@ -91,7 +105,7 @@ export function QuestsPanel() {
             <p className="system-label">Loadout</p>
             <div className="tag-cloud compact">
               {selectedTags.map((tag) => (
-                <span key={`${selectedProject.title}-${tag}`}>{tag}</span>
+                <span key={`${displayedProject.title}-${tag}`}>{tag}</span>
               ))}
             </div>
           </div>
