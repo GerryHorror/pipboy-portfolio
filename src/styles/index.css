@@ -545,18 +545,25 @@ svg {
   display: grid;
   grid-template-columns: minmax(260px, 0.55fr) minmax(0, 1.45fr);
   gap: 14px;
-  min-height: 100%;
+  height: 100%;
+  min-height: 0;
+  overflow: hidden;
 }
 
 .quest-index,
 .quest-detail {
   min-width: 0;
+  min-height: 0;
 }
 
 .quest-index {
   display: grid;
   align-content: start;
   gap: 14px;
+  overflow-y: auto;
+  overflow-x: hidden;
+  overscroll-behavior: contain;
+  scrollbar-color: var(--amber-strong) transparent;
 }
 
 .quest-list {
@@ -620,8 +627,31 @@ svg {
 
 .quest-detail {
   display: grid;
+  grid-template-rows: auto minmax(0, 1fr);
+  gap: 16px;
+  overflow: hidden;
+}
+
+.quest-detail-body {
+  display: grid;
   align-content: start;
   gap: 16px;
+  min-height: 0;
+  overflow-y: auto;
+  overflow-x: hidden;
+  overscroll-behavior: contain;
+  padding-right: 8px;
+  scrollbar-color: var(--amber-strong) transparent;
+}
+
+.quest-index::-webkit-scrollbar,
+.quest-detail-body::-webkit-scrollbar {
+  width: 10px;
+}
+
+.quest-index::-webkit-scrollbar-thumb,
+.quest-detail-body::-webkit-scrollbar-thumb {
+  background: var(--amber-strong);
 }
 
 .quest-detail-section {
@@ -812,7 +842,19 @@ svg {
   }
 
   .quest-layout {
+    height: auto;
     min-height: auto;
+    overflow: visible;
+  }
+
+  .quest-index,
+  .quest-detail,
+  .quest-detail-body {
+    overflow: visible;
+  }
+
+  .quest-detail-body {
+    padding-right: 0;
   }
 
   .span-two {

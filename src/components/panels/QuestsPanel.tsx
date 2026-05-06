@@ -1,14 +1,19 @@
 import { ExternalLink } from "lucide-react";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { experience, projects } from "../../data/portfolio";
 
 export function QuestsPanel() {
   const [selectedProjectIndex, setSelectedProjectIndex] = useState(0);
+  const detailBodyRef = useRef<HTMLDivElement>(null);
   const selectedProject = projects[selectedProjectIndex] ?? projects[0];
   const selectedTags = useMemo(
     () => [...new Set([...selectedProject.stack, ...selectedProject.tags])],
     [selectedProject],
   );
+
+  useEffect(() => {
+    detailBodyRef.current?.scrollTo({ top: 0 });
+  }, [selectedProjectIndex]);
 
   return (
     <article className="quest-layout" aria-labelledby="quests-title">
@@ -69,23 +74,25 @@ export function QuestsPanel() {
           </div>
         </div>
 
-        <p className="project-summary">{selectedProject.summary}</p>
+        <div className="quest-detail-body" ref={detailBodyRef}>
+          <p className="project-summary">{selectedProject.summary}</p>
 
-        <div className="quest-detail-section">
-          <p className="system-label">Objectives</p>
-          <ul>
-            {selectedProject.highlights.map((highlight) => (
-              <li key={highlight}>{highlight}</li>
-            ))}
-          </ul>
-        </div>
+          <div className="quest-detail-section">
+            <p className="system-label">Objectives</p>
+            <ul>
+              {selectedProject.highlights.map((highlight) => (
+                <li key={highlight}>{highlight}</li>
+              ))}
+            </ul>
+          </div>
 
-        <div className="quest-detail-section">
-          <p className="system-label">Loadout</p>
-          <div className="tag-cloud compact">
-            {selectedTags.map((tag) => (
-              <span key={`${selectedProject.title}-${tag}`}>{tag}</span>
-            ))}
+          <div className="quest-detail-section">
+            <p className="system-label">Loadout</p>
+            <div className="tag-cloud compact">
+              {selectedTags.map((tag) => (
+                <span key={`${selectedProject.title}-${tag}`}>{tag}</span>
+              ))}
+            </div>
           </div>
         </div>
       </section>
