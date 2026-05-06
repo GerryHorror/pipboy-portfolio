@@ -26,7 +26,8 @@ export function QuestsPanel() {
             <button
               key={project.title}
               type="button"
-              className={index === selectedProjectIndex ? "active" : undefined}
+              className={`anim-stagger${index === selectedProjectIndex ? " active" : ""}`}
+              style={{ animationDelay: `${index * 60}ms` }}
               aria-selected={index === selectedProjectIndex}
               role="option"
               onClick={() => setSelectedProjectIndex(index)}

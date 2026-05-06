@@ -395,6 +395,8 @@ svg {
   padding: 7px 8px;
   color: var(--text);
   font-size: 0.92rem;
+  position: relative;
+  overflow: hidden;
 }
 
 .tab-nav button.active {
@@ -568,6 +570,13 @@ svg {
   display: block;
   height: 100%;
   background: linear-gradient(90deg, var(--green), var(--amber-strong));
+  transform-origin: left;
+  animation: bar-fill 700ms ease both;
+  transition: box-shadow 160ms ease;
+}
+
+.skill-row:hover .condition-bar span {
+  box-shadow: 0 0 10px rgba(255, 184, 79, 0.55), 0 0 22px rgba(157, 244, 165, 0.25);
 }
 
 .timeline-list {
@@ -823,7 +832,6 @@ svg {
 
 .scanlines {
   z-index: 4;
-  opacity: 0.44;
   background: repeating-linear-gradient(
     0deg,
     rgba(0, 0, 0, 0.22),
@@ -832,6 +840,7 @@ svg {
     transparent 5px
   );
   mix-blend-mode: multiply;
+  animation: crt-flicker 8s step-end infinite;
 }
 
 .glow {
@@ -965,6 +974,124 @@ svg {
   [role="button"] *,
   [role="option"] * {
     cursor: inherit;
+  }
+}
+
+/* ─── NEW ANIMATIONS & VISUAL FX ──────────────────────────────────── */
+
+@keyframes panel-enter {
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fade-slide-in {
+  from { opacity: 0; transform: translateX(-6px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes bar-fill {
+  from { transform: scaleX(0); }
+  to   { transform: scaleX(1); }
+}
+
+@keyframes crt-flicker {
+  0%, 19%, 21%, 23%, 25%, 54%, 56%, 100% { opacity: 0.44; }
+  20%, 24%, 55% { opacity: 0.30; }
+}
+
+@keyframes scanline-beam-scroll {
+  from { top: -8px; }
+  to   { top: calc(100% + 8px); }
+}
+
+@keyframes glitch-1 {
+  0%  { clip-path: inset(0% 0 97% 0); transform: translate(-2px, 0); }
+  25% { clip-path: inset(30% 0 60% 0); transform: translate(2px, 0); }
+  50% { clip-path: inset(70% 0 10% 0); transform: translate(-1px, 0); }
+  75% { clip-path: inset(10% 0 80% 0); transform: translate(1px, 0); }
+  100%{ clip-path: inset(0% 0 97% 0); transform: translate(0, 0); }
+}
+
+@keyframes glitch-2 {
+  0%  { clip-path: inset(80% 0 5% 0); transform: translate(2px, 0); }
+  33% { clip-path: inset(20% 0 65% 0); transform: translate(-2px, 0); }
+  66% { clip-path: inset(55% 0 25% 0); transform: translate(1px, 0); }
+  100%{ clip-path: inset(80% 0 5% 0); transform: translate(0, 0); }
+}
+
+@keyframes ripple-expand {
+  from { transform: scale(0); opacity: 0.5; }
+  to   { transform: scale(3); opacity: 0; }
+}
+
+.panel-enter {
+  height: 100%;
+  animation: panel-enter 220ms ease both;
+}
+
+.anim-stagger {
+  animation: fade-slide-in 240ms ease both;
+}
+
+.scanline-beam {
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: rgba(255, 184, 79, 0.1);
+  pointer-events: none;
+  z-index: 5;
+  animation: scanline-beam-scroll 7s linear infinite;
+}
+
+.screen-vignette {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 3;
+  background: radial-gradient(ellipse at 50% 50%, transparent 58%, rgba(0, 0, 0, 0.6) 100%);
+}
+
+.ripple {
+  position: absolute;
+  border-radius: 50%;
+  width: 60px;
+  height: 60px;
+  margin-top: -30px;
+  margin-left: -30px;
+  background: rgba(255, 184, 79, 0.3);
+  animation: ripple-expand 0.5s ease forwards;
+  pointer-events: none;
+}
+
+.pip-header h1 {
+  position: relative;
+  text-shadow:
+    -1px 0 rgba(136, 216, 255, 0.35),
+    1px 0 rgba(255, 100, 100, 0.25);
+}
+
+.pip-header h1::before,
+.pip-header h1::after {
+  content: attr(data-text);
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  opacity: 0;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .pip-header h1:hover::before {
+    opacity: 1;
+    color: var(--cyan);
+    animation: glitch-1 400ms steps(4) 1;
+  }
+
+  .pip-header h1:hover::after {
+    opacity: 1;
+    color: rgba(255, 100, 100, 0.8);
+    animation: glitch-2 400ms steps(4) 1;
   }
 }
 

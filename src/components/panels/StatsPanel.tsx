@@ -7,14 +7,18 @@ export function StatsPanel() {
         <p className="system-label">Stats</p>
         <h2 id="stats-title">Technical capability index</h2>
         <div className="skill-list">
-          {skills.map((group) => (
-            <div className="skill-row" key={group.label}>
+          {skills.map((group, i) => (
+            <div
+              className="skill-row anim-stagger"
+              key={group.label}
+              style={{ animationDelay: `${i * 70}ms` }}
+            >
               <div className="skill-row-header">
                 <strong>{group.label}</strong>
                 <span>{group.level}%</span>
               </div>
               <div className="condition-bar" aria-hidden="true">
-                <span style={{ width: `${group.level}%` }} />
+                <span style={{ width: `${group.level}%`, animationDelay: `${i * 70}ms` }} />
               </div>
               <div className="tag-cloud compact">
                 {group.skills.map((skill) => (

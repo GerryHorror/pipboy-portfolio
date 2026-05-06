@@ -35,7 +35,7 @@ export function PipBoyShell({
             <header className="pip-header">
               <div>
                 <p className="system-label">Candidate dossier</p>
-                <h1>Gerard Blankenberg</h1>
+                <h1 data-text="Gerard Blankenberg">Gerard Blankenberg</h1>
               </div>
               <div className="status-cluster" aria-label="Candidate status">
                 <span>LVL 01 DEV</span>
@@ -47,16 +47,20 @@ export function PipBoyShell({
             <TabNav tabs={tabs} activeTab={activeTab} onTabChange={onTabChange} />
 
             <div className="panel-window">
-              {activeTab === "profile" ? <ProfilePanel /> : null}
-              {activeTab === "stats" ? <StatsPanel /> : null}
-              {activeTab === "quests" ? <QuestsPanel /> : null}
-              {activeTab === "contact" ? <ContactPanel /> : null}
+              <div key={activeTab} className="panel-enter">
+                {activeTab === "profile" ? <ProfilePanel /> : null}
+                {activeTab === "stats" ? <StatsPanel /> : null}
+                {activeTab === "quests" ? <QuestsPanel /> : null}
+                {activeTab === "contact" ? <ContactPanel /> : null}
+              </div>
             </div>
 
             <ThemeControls muted={muted} onToggleMuted={onToggleMuted} />
           </div>
 
           <div className="scanlines" aria-hidden="true" />
+          <div className="scanline-beam" aria-hidden="true" />
+          <div className="screen-vignette" aria-hidden="true" />
           <div className="glow" aria-hidden="true" />
         </div>
       </div>
