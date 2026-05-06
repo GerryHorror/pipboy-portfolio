@@ -1,5 +1,7 @@
 export type ProjectStatus = "Active" | "Complete" | "Portfolio";
 
+export type Theme = "amber" | "green" | "pride";
+
 export type TabId = "profile" | "stats" | "quests" | "contact";
 
 export interface TabConfig {

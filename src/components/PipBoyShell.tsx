@@ -1,5 +1,5 @@
 import { tabs } from "../data/tabs";
-import type { TabConfig, TabId } from "../types";
+import type { TabConfig, TabId, Theme } from "../types";
 import { ContactPanel } from "./panels/ContactPanel";
 import { ProfilePanel } from "./panels/ProfilePanel";
 import { QuestsPanel } from "./panels/QuestsPanel";
@@ -10,17 +10,21 @@ import { ThemeControls } from "./ThemeControls";
 interface PipBoyShellProps {
   activeTab: TabId;
   muted: boolean;
+  theme: Theme;
   selectedTab: TabConfig;
   onTabChange: (tab: TabId) => void;
   onToggleMuted: () => void;
+  onThemeChange: (t: Theme) => void;
 }
 
 export function PipBoyShell({
   activeTab,
   muted,
+  theme,
   selectedTab,
   onTabChange,
   onToggleMuted,
+  onThemeChange,
 }: PipBoyShellProps) {
   return (
     <section className="device-wrap" aria-label="Gerard Blankenberg portfolio">
@@ -55,7 +59,7 @@ export function PipBoyShell({
               </div>
             </div>
 
-            <ThemeControls muted={muted} onToggleMuted={onToggleMuted} />
+            <ThemeControls muted={muted} theme={theme} onToggleMuted={onToggleMuted} onThemeChange={onThemeChange} />
           </div>
 
           <div className="scanlines" aria-hidden="true" />

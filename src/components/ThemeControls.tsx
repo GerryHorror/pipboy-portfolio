@@ -1,15 +1,34 @@
 import { Volume2, VolumeX } from "lucide-react";
+import type { Theme } from "../types";
 
 interface ThemeControlsProps {
   muted: boolean;
+  theme: Theme;
   onToggleMuted: () => void;
+  onThemeChange: (t: Theme) => void;
 }
 
-export function ThemeControls({ muted, onToggleMuted }: ThemeControlsProps) {
+const THEMES: { id: Theme; label: string }[] = [
+  { id: "amber", label: "Amber" },
+  { id: "green", label: "Green" },
+  { id: "pride", label: "Pride" },
+];
+
+export function ThemeControls({ muted, theme, onToggleMuted, onThemeChange }: ThemeControlsProps) {
   return (
     <footer className="theme-controls">
-      <div className="theme-chip" aria-label="Active colour theme">
-        Amber HUD
+      <div className="theme-chips" aria-label="Colour theme">
+        {THEMES.map((t) => (
+          <button
+            key={t.id}
+            type="button"
+            className={`theme-chip-btn${theme === t.id ? " active" : ""}${t.id === "pride" ? " pride" : ""}`}
+            aria-pressed={theme === t.id}
+            onClick={() => onThemeChange(t.id)}
+          >
+            {t.label}
+          </button>
+        ))}
       </div>
       <button
         className="icon-command"

@@ -2,17 +2,25 @@ import { useCallback, useMemo, useState } from "react";
 import { BootScreen } from "./components/BootScreen";
 import { PipBoyShell } from "./components/PipBoyShell";
 import { tabs } from "./data/tabs";
-import type { TabId } from "./types";
+import type { TabId, Theme } from "./types";
 
 const getStoredMute = () => {
   if (typeof localStorage === "undefined") return false;
   return localStorage.getItem("pipboy-muted") === "true";
 };
 
+const getStoredTheme = (): Theme => {
+  if (typeof localStorage === "undefined") return "amber";
+  const v = localStorage.getItem("pipboy-theme");
+  if (v === "green" || v === "pride") return v;
+  return "amber";
+};
+
 function App() {
   const [bootComplete, setBootComplete] = useState(false);
   const [activeTab, setActiveTab] = useState<TabId>("profile");
   const [muted, setMuted] = useState(getStoredMute);
+  const [theme, setThemeState] = useState<Theme>(getStoredTheme);
 
   const selectedTab = useMemo(
     () => tabs.find((tab) => tab.id === activeTab) ?? tabs[0],
@@ -54,8 +62,13 @@ function App() {
     });
   };
 
+  const handleThemeChange = (t: Theme) => {
+    localStorage.setItem("pipboy-theme", t);
+    setThemeState(t);
+  };
+
   return (
-    <main className="app-shell">
+    <main className="app-shell" data-theme={theme}>
       <div className="ambient-grid" aria-hidden="true" />
       {!bootComplete ? (
         <BootScreen onComplete={() => setBootComplete(true)} />
@@ -63,9 +76,11 @@ function App() {
         <PipBoyShell
           activeTab={activeTab}
           muted={muted}
+          theme={theme}
           selectedTab={selectedTab}
           onTabChange={handleTabChange}
           onToggleMuted={toggleMuted}
+          onThemeChange={handleThemeChange}
         />
       )}
     </main>
