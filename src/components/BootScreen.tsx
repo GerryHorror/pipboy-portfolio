@@ -33,14 +33,28 @@ export function BootScreen({ onComplete }: BootScreenProps) {
   return (
     <section className="boot-screen" aria-label="Portfolio boot sequence">
       <div className="boot-panel">
-        <p className="system-label">Retro personal terminal</p>
-        <h1>Gerard Blankenberg</h1>
-        <div className="boot-lines" aria-live="polite">
-          {bootLines.slice(0, visibleLines).map((line) => (
-            <p key={line}>
-              <span>&gt;</span> {line}
-            </p>
-          ))}
+        <div className="boot-identity">
+          <div>
+            <p className="system-label">Retro personal terminal</p>
+            <h1>Gerard Blankenberg</h1>
+          </div>
+          <figure className="boot-gif-frame">
+            <img
+              src="/well-rested.gif"
+              alt="Animated well-rested boot mascot"
+              width="200"
+              height="200"
+            />
+          </figure>
+        </div>
+        <div className="boot-content">
+          <div className="boot-lines" aria-live="polite">
+            {bootLines.slice(0, visibleLines).map((line) => (
+              <p key={line}>
+                <span>&gt;</span> {line}
+              </p>
+            ))}
+          </div>
         </div>
         <button className="primary-command" type="button" onClick={onComplete}>
           Skip boot
