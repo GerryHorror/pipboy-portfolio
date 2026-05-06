@@ -50,6 +50,61 @@ button {
   color: inherit;
 }
 
+@media (hover: hover) and (pointer: fine) {
+  :root {
+    --cursor-pointer: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='28' height='28' viewBox='0 0 28 28'%3E%3Cpath d='M4 3l18 10-7 2 5 8-4 2-5-8-5 6L4 3z' fill='%230c0906' stroke='%23ffb84f' stroke-width='2' stroke-linejoin='round'/%3E%3Cpath d='M7 8l11 6-6 1 5 8' fill='none' stroke='%23ffd68b' stroke-width='1.35' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E")
+      4 3;
+    --cursor-finger: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='30' height='30' viewBox='0 0 30 30'%3E%3Cpath d='M8 24h13l3-7-1-4-3-1-2 1-2-2h-3V5l-4 1v12l-3-2-2 3 4 5z' fill='%230c0906' stroke='%23ffb84f' stroke-width='2' stroke-linejoin='round'/%3E%3Cpath d='M13 6v11M16 12v6M20 14v5M8 19l4 3' fill='none' stroke='%23ffd68b' stroke-width='1.35' stroke-linecap='round'/%3E%3C/svg%3E")
+      13 5;
+    --cursor-text: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='30' viewBox='0 0 24 30'%3E%3Cpath d='M8 3h8M12 3v24M8 27h8' fill='none' stroke='%230c0906' stroke-width='5' stroke-linecap='square'/%3E%3Cpath d='M8 3h8M12 3v24M8 27h8' fill='none' stroke='%23ffb84f' stroke-width='3' stroke-linecap='square'/%3E%3Cpath d='M12 6v18' fill='none' stroke='%23ffd68b' stroke-width='1' stroke-linecap='square'/%3E%3C/svg%3E")
+      12 15;
+  }
+
+  html,
+  body,
+  .app-shell,
+  .boot-screen,
+  .device-wrap,
+  .device-frame,
+  .screen,
+  .pipboy,
+  .panel-window {
+    cursor: var(--cursor-pointer), auto;
+  }
+
+  p,
+  h1,
+  h2,
+  h3,
+  li,
+  span,
+  strong,
+  small,
+  input,
+  textarea,
+  [contenteditable="true"] {
+    cursor: var(--cursor-text), text;
+  }
+
+  button,
+  [role="button"],
+  [role="option"],
+  .quest-list button,
+  .primary-command {
+    cursor: var(--cursor-finger), pointer;
+  }
+
+  a {
+    cursor: var(--cursor-pointer), pointer;
+  }
+
+  button *,
+  [role="button"] *,
+  [role="option"] * {
+    cursor: inherit;
+  }
+}
+
 svg {
   width: 1.05rem;
   height: 1.05rem;
@@ -894,6 +949,30 @@ svg {
   .contact-list a,
   .project-links a {
     width: 100%;
+  }
+}
+
+@media (hover: hover) and (pointer: fine) {
+  button,
+  [role="button"],
+  [role="option"],
+  .tab-nav button,
+  .quest-list button,
+  .theme-controls button,
+  .primary-command {
+    cursor: var(--cursor-finger), pointer;
+  }
+
+  a,
+  .project-links a,
+  .contact-list a {
+    cursor: var(--cursor-pointer), pointer;
+  }
+
+  button *,
+  [role="button"] *,
+  [role="option"] * {
+    cursor: inherit;
   }
 }
 
