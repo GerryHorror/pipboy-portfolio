@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 
 interface BootScreenProps {
+  muted: boolean;
   onComplete: () => void;
 }
 
@@ -25,9 +26,20 @@ const bootLines: BootLine[] = [
 
 const warnResults = new Set(["DETECTED", "LOADING"]);
 
-export function BootScreen({ onComplete }: BootScreenProps) {
+export function BootScreen({ muted, onComplete }: BootScreenProps) {
   const [visibleLines, setVisibleLines] = useState(1);
   const isComplete = visibleLines >= bootLines.length;
+
+  useEffect(() => {
+    if (muted) return;
+    const audio = new Audio("/PipBoy_BootSequence.wav");
+    audio.volume = 0.6;
+    audio.play().catch(() => {});
+    return () => {
+      audio.pause();
+      audio.currentTime = 0;
+    };
+  }, [muted]);
 
   useEffect(() => {
     if (isComplete) return;

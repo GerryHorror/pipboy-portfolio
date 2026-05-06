@@ -71,7 +71,7 @@ function App() {
     <main className="app-shell" data-theme={theme}>
       <div className="ambient-grid" aria-hidden="true" />
       {!bootComplete ? (
-        <BootScreen onComplete={() => setBootComplete(true)} />
+        <BootScreen muted={muted} onComplete={() => setBootComplete(true)} />
       ) : (
         <PipBoyShell
           activeTab={activeTab}
