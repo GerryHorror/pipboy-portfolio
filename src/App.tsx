@@ -30,18 +30,18 @@ function App() {
   const humRef = useRef<HTMLAudioElement | null>(null);
 
   useEffect(() => {
-    if (!bootComplete || muted) return;
+    if (!bootComplete) return;
     const hum = new Audio("/PipBoy_Hum.wav");
     hum.loop = true;
     hum.volume = 0.25;
-    hum.play().catch(() => {});
     humRef.current = hum;
+    if (!muted) hum.play().catch(() => {});
     return () => {
       hum.pause();
-      hum.currentTime = 0;
       humRef.current = null;
     };
-  }, [bootComplete, muted]);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [bootComplete]);
 
   const playSelect = useCallback(() => {
     if (muted) return;
@@ -59,6 +59,11 @@ function App() {
     setMuted((current) => {
       const next = !current;
       localStorage.setItem("pipboy-muted", String(next));
+      const hum = humRef.current;
+      if (hum) {
+        if (next) hum.pause();
+        else hum.play().catch(() => {});
+      }
       return next;
     });
   };
