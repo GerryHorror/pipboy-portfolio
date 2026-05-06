@@ -1,4 +1,4 @@
-import { useCallback, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { BootScreen } from "./components/BootScreen";
 import { PipBoyShell } from "./components/PipBoyShell";
 import { tabs } from "./data/tabs";
@@ -27,31 +27,32 @@ function App() {
     [activeTab],
   );
 
-  const playTone = useCallback(() => {
+  const humRef = useRef<HTMLAudioElement | null>(null);
+
+  useEffect(() => {
+    if (!bootComplete || muted) return;
+    const hum = new Audio("/PipBoy_Hum.wav");
+    hum.loop = true;
+    hum.volume = 0.25;
+    hum.play().catch(() => {});
+    humRef.current = hum;
+    return () => {
+      hum.pause();
+      hum.currentTime = 0;
+      humRef.current = null;
+    };
+  }, [bootComplete, muted]);
+
+  const playSelect = useCallback(() => {
     if (muted) return;
-
-    const AudioContextConstructor =
-      window.AudioContext ?? window.webkitAudioContext;
-    if (!AudioContextConstructor) return;
-
-    const context = new AudioContextConstructor();
-    const oscillator = context.createOscillator();
-    const gain = context.createGain();
-
-    oscillator.type = "square";
-    oscillator.frequency.value = 460;
-    gain.gain.setValueAtTime(0.035, context.currentTime);
-    gain.gain.exponentialRampToValueAtTime(0.001, context.currentTime + 0.08);
-
-    oscillator.connect(gain);
-    gain.connect(context.destination);
-    oscillator.start();
-    oscillator.stop(context.currentTime + 0.08);
+    const audio = new Audio("/Pipboy_Select.wav");
+    audio.volume = 0.7;
+    audio.play().catch(() => {});
   }, [muted]);
 
   const handleTabChange = (tab: TabId) => {
     setActiveTab(tab);
-    playTone();
+    playSelect();
   };
 
   const toggleMuted = () => {
