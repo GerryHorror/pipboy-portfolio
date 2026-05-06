@@ -1,4 +1,4 @@
-import { MapPin, Terminal } from "lucide-react";
+import { MapPin } from "lucide-react";
 import { profile } from "../../data/portfolio";
 
 export function ProfilePanel() {
@@ -16,7 +16,7 @@ export function ProfilePanel() {
 
       <section className="dossier-card avatar-card" aria-label="Candidate snapshot">
         <div className="avatar-ring">
-          <Terminal aria-hidden="true" />
+          <img src="/vault_me.png" alt="Gerard illustrated as a Vault-Tec character" />
         </div>
         <div className="metric-grid">
           {profile.metrics.map((metric) => (
