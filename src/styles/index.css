@@ -131,11 +131,22 @@ svg {
   mask-image: radial-gradient(circle at center, #000 0%, transparent 72%);
 }
 
-.boot-screen,
 .device-wrap {
   min-height: calc(100vh - clamp(24px, 6vw, 64px));
   display: grid;
   place-items: center;
+}
+
+.boot-screen {
+  position: relative;
+  z-index: 2;
+  height: 100%;
+  min-height: 0;
+  display: grid;
+  place-items: center;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  padding: clamp(28px, 3vw, 42px) clamp(16px, 2.4vw, 30px);
 }
 
 .boot-panel {
@@ -164,14 +175,6 @@ svg {
   margin: 0;
   display: grid;
   place-items: center;
-  border: 2px solid var(--line);
-  background:
-    radial-gradient(circle, rgba(255, 184, 79, 0.15), transparent 66%),
-    rgba(10, 7, 4, 0.72);
-  box-shadow:
-    0 0 28px rgba(255, 184, 79, 0.12),
-    inset 0 0 42px rgba(0, 0, 0, 0.52);
-  overflow: hidden;
 }
 
 .boot-gif-frame img {
@@ -1066,14 +1069,6 @@ svg {
     inset 0 0 120px rgba(157, 244, 165, 0.08);
 }
 
-[data-theme="green"] .boot-gif-frame {
-  background:
-    radial-gradient(circle, rgba(157, 244, 165, 0.15), transparent 66%),
-    rgba(10, 7, 4, 0.72);
-  box-shadow:
-    0 0 28px rgba(157, 244, 165, 0.12),
-    inset 0 0 42px rgba(0, 0, 0, 0.52);
-}
 
 [data-theme="pride"] .boot-panel {
   background:
@@ -1087,14 +1082,6 @@ svg {
     inset 0 0 120px hsla(calc(var(--pride-hue) + 60deg), 85%, 65%, 0.06);
 }
 
-[data-theme="pride"] .boot-gif-frame {
-  background:
-    radial-gradient(circle, hsla(var(--pride-hue), 85%, 65%, 0.15), transparent 66%),
-    rgba(10, 7, 4, 0.72);
-  box-shadow:
-    0 0 28px hsla(var(--pride-hue), 85%, 65%, 0.15),
-    inset 0 0 42px rgba(0, 0, 0, 0.52);
-}
 
 /* Green HUD */
 [data-theme="green"] {

@@ -76,19 +76,32 @@ function App() {
   return (
     <main className="app-shell" data-theme={theme}>
       <div className="ambient-grid" aria-hidden="true" />
-      {!bootComplete ? (
-        <BootScreen muted={muted} onComplete={() => setBootComplete(true)} />
-      ) : (
-        <PipBoyShell
-          activeTab={activeTab}
-          muted={muted}
-          theme={theme}
-          selectedTab={selectedTab}
-          onTabChange={handleTabChange}
-          onToggleMuted={toggleMuted}
-          onThemeChange={handleThemeChange}
-        />
-      )}
+      <section className="device-wrap" aria-label="Gerard Blankenberg portfolio">
+        <div className="device-frame">
+          <div className="screen">
+            <div className="screen-chrome">
+              <p>PORTFOLIO_OS</p>
+              <p>{bootComplete ? selectedTab.status : "BOOT SEQUENCE"}</p>
+            </div>
+            {!bootComplete ? (
+              <BootScreen muted={muted} onComplete={() => setBootComplete(true)} />
+            ) : (
+              <PipBoyShell
+                activeTab={activeTab}
+                muted={muted}
+                theme={theme}
+                onTabChange={handleTabChange}
+                onToggleMuted={toggleMuted}
+                onThemeChange={handleThemeChange}
+              />
+            )}
+            <div className="scanlines" aria-hidden="true" />
+            <div className="scanline-beam" aria-hidden="true" />
+            <div className="screen-vignette" aria-hidden="true" />
+            <div className="glow" aria-hidden="true" />
+          </div>
+        </div>
+      </section>
     </main>
   );
 }
