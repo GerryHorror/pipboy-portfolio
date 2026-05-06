@@ -26,7 +26,7 @@ export function BootScreen({ onComplete }: BootScreenProps) {
 
   useEffect(() => {
     if (visibleLines < bootLines.length) return;
-    const timeout = window.setTimeout(onComplete, 780);
+    const timeout = window.setTimeout(onComplete, 1780);
     return () => window.clearTimeout(timeout);
   }, [onComplete, visibleLines]);
 
