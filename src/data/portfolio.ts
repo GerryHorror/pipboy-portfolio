@@ -93,7 +93,7 @@ export const projects: Project[] = [
       "Applied service-based business logic, repository pattern, AutoMapper, and Google Books API integration.",
       "Designed with POPIA-conscious handling for sensitive user stories and community resources.",
     ],
-    links: [{ label: "GitHub profile", href: githubProfile }],
+    links: [{ label: "GitHub", href: "https://github.com/ST10046280-Blankenberg/healing-in-writing" }],
     tags: ["ASP.NET", "Azure", "RBAC"],
   },
   {
@@ -108,7 +108,7 @@ export const projects: Project[] = [
       "Structured the app around MVVM for maintainability and predictable screen state.",
       "Added streaks, achievements, and challenges to encourage consistent budgeting.",
     ],
-    links: [{ label: "GitHub profile", href: githubProfile }],
+    links: [{ label: "GitHub", href: "https://github.com/GerryHorror/tightbudget-prog7313" }],
     tags: ["Android", "Kotlin", "Firebase"],
   },
   {
@@ -123,10 +123,7 @@ export const projects: Project[] = [
       "Used BSTs, AVL trees, heaps, graphs, and queue-based logic for request prioritisation.",
       "Focused on recommendations and service request flow rather than a static CRUD-only implementation.",
     ],
-    links: [
-      { label: "Project listing", href: "https://devpost.com/software/civicconnect-cgf79p" },
-      { label: "GitHub profile", href: githubProfile },
-    ],
+    links: [{ label: "GitHub", href: "https://github.com/GerryHorror/civic-connect-prog7312" }],
     tags: ["MVC", "Algorithms", "Civic tech"],
   },
   {
@@ -141,7 +138,12 @@ export const projects: Project[] = [
       "Masked sensitive data and separated customer and employee flows with RBAC.",
       "Used SonarCloud to support code quality checks during development.",
     ],
-    links: [{ label: "GitHub profile", href: githubProfile }],
+    links: [
+      {
+        label: "GitHub",
+        href: "https://github.com/ST10046280-Blankenberg/gerard-st10046280-insy7314-poe",
+      },
+    ],
     tags: ["Security", "MERN", "JWT"],
   },
   {
