@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 interface BootScreenProps {
   muted: boolean;
@@ -24,36 +24,54 @@ const bootLines: BootLine[] = [
   { type: "portfolio", text: "CONTACT CHANNELS READY" },
 ];
 
+// Lines spread across ~3.5s so they finish before the 5s audio ends
+const LINE_INTERVAL_MS = 350;
+
 const warnResults = new Set(["DETECTED", "LOADING"]);
 
 export function BootScreen({ muted, onComplete }: BootScreenProps) {
   const [visibleLines, setVisibleLines] = useState(1);
   const isComplete = visibleLines >= bootLines.length;
+  const onCompleteRef = useRef(onComplete);
+  onCompleteRef.current = onComplete;
 
+  // Play audio; fire onComplete when it ends naturally
   useEffect(() => {
     if (muted) return;
     const audio = new Audio("/PipBoy_BootSequence.wav");
     audio.volume = 0.6;
+    const handleEnded = () => onCompleteRef.current();
+    audio.addEventListener("ended", handleEnded);
     audio.play().catch(() => {});
     return () => {
+      audio.removeEventListener("ended", handleEnded);
       audio.pause();
       audio.currentTime = 0;
     };
   }, [muted]);
 
+  // Line reveal
   useEffect(() => {
     if (isComplete) return;
-    const timeout = window.setTimeout(() => {
-      setVisibleLines((current) => current + 1);
-    }, 260);
-    return () => window.clearTimeout(timeout);
+    const t = window.setTimeout(
+      () => setVisibleLines((c) => c + 1),
+      LINE_INTERVAL_MS,
+    );
+    return () => window.clearTimeout(t);
   }, [visibleLines, isComplete]);
 
+  // When muted, complete shortly after all lines are shown
   useEffect(() => {
-    if (!isComplete) return;
-    const timeout = window.setTimeout(onComplete, 1780);
-    return () => window.clearTimeout(timeout);
-  }, [onComplete, isComplete]);
+    if (!isComplete || !muted) return;
+    const t = window.setTimeout(() => onCompleteRef.current(), 1200);
+    return () => window.clearTimeout(t);
+  }, [isComplete, muted]);
+
+  // Safety fallback: complete even if audio never fires (autoplay blocked, etc.)
+  useEffect(() => {
+    const t = window.setTimeout(() => onCompleteRef.current(), 6500);
+    return () => window.clearTimeout(t);
+  }, []);
 
   return (
     <section className="boot-screen" aria-label="Portfolio boot sequence">
@@ -76,26 +94,34 @@ export function BootScreen({ muted, onComplete }: BootScreenProps) {
           <div className="boot-lines" aria-live="polite">
             {bootLines.slice(0, visibleLines).map((line, i) => {
               const isLast = i === visibleLines - 1;
-              const cursor = isLast && !isComplete
-                ? <span className="boot-cursor" aria-hidden="true">█</span>
-                : null;
+              const cursor =
+                isLast && !isComplete ? (
+                  <span className="boot-cursor" aria-hidden="true">
+                    █
+                  </span>
+                ) : null;
 
               if (line.type === "check") {
                 return (
                   <p key={line.text} className="boot-check-line">
                     <span className="boot-check-label">{line.text}</span>
                     {!isLast || isComplete ? (
-                      <span className={`boot-check-result${warnResults.has(line.result ?? "") ? " warn" : ""}`}>
+                      <span
+                        className={`boot-check-result${warnResults.has(line.result ?? "") ? " warn" : ""}`}
+                      >
                         {line.result}
                       </span>
-                    ) : cursor}
+                    ) : (
+                      cursor
+                    )}
                   </p>
                 );
               }
 
               return (
                 <p key={line.text}>
-                  <span>&gt;</span> {line.text}{cursor}
+                  <span>&gt;</span> {line.text}
+                  {cursor}
                 </p>
               );
             })}
