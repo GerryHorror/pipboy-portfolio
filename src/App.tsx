@@ -78,6 +78,13 @@ function App() {
       <div className="ambient-grid" aria-hidden="true" />
       <section className="device-wrap" aria-label="Gerard Blankenberg portfolio">
         <div className="device-frame">
+          <div className="device-bolts" aria-hidden="true">
+            <span /><span /><span /><span />
+          </div>
+          <div className="device-controls" aria-hidden="true">
+            <span /><span /><span />
+          </div>
+          <div className={`device-led${muted ? " muted" : ""}`} aria-hidden="true" />
           <div className="screen">
             <div className="screen-chrome">
               <p>PORTFOLIO_OS</p>
