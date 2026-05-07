@@ -1,3 +1,4 @@
+import { useRef } from "react";
 import { tabs } from "../data/tabs";
 import type { TabId, Theme } from "../types";
 import { ContactPanel } from "./panels/ContactPanel";
@@ -14,6 +15,9 @@ interface PipBoyShellProps {
   onTabChange: (tab: TabId) => void;
   onToggleMuted: () => void;
   onThemeChange: (t: Theme) => void;
+  activeSkillFilter: string | null;
+  onSkillClick: (skill: string) => void;
+  onSkillFilter: (skill: string | null) => void;
 }
 
 export function PipBoyShell({
@@ -23,7 +27,30 @@ export function PipBoyShell({
   onTabChange,
   onToggleMuted,
   onThemeChange,
+  activeSkillFilter,
+  onSkillClick,
+  onSkillFilter,
 }: PipBoyShellProps) {
+  const touchStartX = useRef(0);
+  const touchStartY = useRef(0);
+
+  const handleTouchStart = (e: React.TouchEvent) => {
+    touchStartX.current = e.touches[0].clientX;
+    touchStartY.current = e.touches[0].clientY;
+  };
+
+  const handleTouchEnd = (e: React.TouchEvent) => {
+    const dx = e.changedTouches[0].clientX - touchStartX.current;
+    const dy = e.changedTouches[0].clientY - touchStartY.current;
+    if (Math.abs(dx) < 50 || Math.abs(dy) > 80) return;
+    const currentIndex = tabs.findIndex((t) => t.id === activeTab);
+    if (dx < 0 && currentIndex < tabs.length - 1) {
+      onTabChange(tabs[currentIndex + 1].id);
+    } else if (dx > 0 && currentIndex > 0) {
+      onTabChange(tabs[currentIndex - 1].id);
+    }
+  };
+
   return (
     <div className="pipboy">
       <header className="pip-header">
@@ -40,11 +67,17 @@ export function PipBoyShell({
 
       <TabNav tabs={tabs} activeTab={activeTab} onTabChange={onTabChange} />
 
-      <div className="panel-window">
+      <div
+        className="panel-window"
+        onTouchStart={handleTouchStart}
+        onTouchEnd={handleTouchEnd}
+      >
         <div key={activeTab} className="panel-enter">
           {activeTab === "profile" ? <ProfilePanel /> : null}
-          {activeTab === "stats" ? <StatsPanel /> : null}
-          {activeTab === "quests" ? <QuestsPanel /> : null}
+          {activeTab === "stats" ? <StatsPanel onSkillClick={onSkillClick} /> : null}
+          {activeTab === "quests" ? (
+            <QuestsPanel skillFilter={activeSkillFilter} onSkillFilter={onSkillFilter} />
+          ) : null}
           {activeTab === "contact" ? <ContactPanel /> : null}
         </div>
       </div>

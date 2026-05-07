@@ -1,3 +1,4 @@
+import { useRef } from "react";
 import type { TabConfig, TabId } from "../types";
 
 interface TabNavProps {
@@ -18,11 +19,25 @@ function spawnRipple(e: React.MouseEvent<HTMLButtonElement>) {
 }
 
 export function TabNav({ tabs, activeTab, onTabChange }: TabNavProps) {
+  const btnRefs = useRef<(HTMLButtonElement | null)[]>([]);
+
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLButtonElement>, currentIndex: number) => {
+    if (e.key !== "ArrowLeft" && e.key !== "ArrowRight") return;
+    e.preventDefault();
+    const next =
+      e.key === "ArrowRight"
+        ? (currentIndex + 1) % tabs.length
+        : (currentIndex - 1 + tabs.length) % tabs.length;
+    btnRefs.current[next]?.focus();
+    onTabChange(tabs[next].id);
+  };
+
   return (
     <nav className="tab-nav" aria-label="Portfolio sections">
-      {tabs.map((tab) => (
+      {tabs.map((tab, index) => (
         <button
           key={tab.id}
+          ref={(el) => { btnRefs.current[index] = el; }}
           type="button"
           className={activeTab === tab.id ? "active" : undefined}
           aria-current={activeTab === tab.id ? "page" : undefined}
@@ -30,6 +45,7 @@ export function TabNav({ tabs, activeTab, onTabChange }: TabNavProps) {
             spawnRipple(e);
             onTabChange(tab.id);
           }}
+          onKeyDown={(e) => handleKeyDown(e, index)}
         >
           <span>{tab.label}</span>
         </button>

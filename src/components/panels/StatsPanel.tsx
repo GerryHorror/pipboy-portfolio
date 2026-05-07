@@ -1,6 +1,10 @@
 import { education, skills } from "../../data/portfolio";
 
-export function StatsPanel() {
+interface StatsPanelProps {
+  onSkillClick: (skill: string) => void;
+}
+
+export function StatsPanel({ onSkillClick }: StatsPanelProps) {
   return (
     <article className="panel-grid stats-grid" aria-labelledby="stats-title">
       <section className="dossier-card span-two">
@@ -22,7 +26,15 @@ export function StatsPanel() {
               </div>
               <div className="tag-cloud compact">
                 {group.skills.map((skill) => (
-                  <span key={skill}>{skill}</span>
+                  <button
+                    key={skill}
+                    type="button"
+                    className="skill-tag-btn"
+                    title={`Filter projects by ${skill}`}
+                    onClick={() => onSkillClick(skill)}
+                  >
+                    {skill}
+                  </button>
                 ))}
               </div>
             </div>

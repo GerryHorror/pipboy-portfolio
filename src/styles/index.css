@@ -1118,7 +1118,10 @@ svg {
   .tab-nav button,
   .quest-list button,
   .theme-controls button,
-  .primary-command {
+  .primary-command,
+  .skill-tag-btn,
+  .copy-btn,
+  .quest-filter-banner button {
     cursor: var(--cursor-finger), pointer;
   }
 
@@ -1352,6 +1355,127 @@ svg {
     color: rgba(255, 100, 100, 0.8);
     animation: glitch-2 400ms steps(4) 1;
   }
+}
+
+/* ─── SKILL TAG BUTTONS (Stats → Quests cross-link) ──────────────── */
+
+.skill-tag-btn {
+  border: 1px solid var(--line-dim);
+  background: rgba(255, 184, 79, 0.06);
+  color: var(--amber-soft);
+  padding: 4px 7px;
+  font-size: 0.64rem;
+  text-transform: uppercase;
+  transition: background 140ms ease, border-color 140ms ease, box-shadow 140ms ease;
+}
+
+.skill-tag-btn:hover,
+.skill-tag-btn:focus-visible {
+  background: rgba(255, 184, 79, 0.2);
+  border-color: var(--amber-soft);
+  box-shadow: 0 0 8px rgba(var(--amber), 0.35);
+  outline: 2px solid rgba(136, 216, 255, 0.6);
+  outline-offset: 2px;
+}
+
+.skill-tag-btn:active {
+  transform: scale(0.94);
+}
+
+/* ─── QUEST FILTER BANNER ─────────────────────────────────────────── */
+
+.quest-filter-banner {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 5px 9px;
+  border: 1px solid var(--line);
+  background: rgba(255, 184, 79, 0.1);
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  color: var(--amber-soft);
+  animation: fade-slide-in 200ms ease both;
+}
+
+.quest-filter-banner button {
+  margin-left: auto;
+  border: none;
+  background: none;
+  color: var(--amber-soft);
+  font-size: 1rem;
+  line-height: 1;
+  padding: 0 2px;
+  opacity: 0.7;
+  transition: opacity 120ms ease;
+}
+
+.quest-filter-banner button:hover {
+  opacity: 1;
+}
+
+/* ─── QUEST FILTER HIGHLIGHTS ─────────────────────────────────────── */
+
+.quest-list button[data-filtered="true"] {
+  border-color: var(--amber-soft);
+  background: rgba(255, 184, 79, 0.16);
+  box-shadow: inset 4px 0 0 var(--amber-strong), 0 0 12px rgba(var(--amber), 0.18);
+}
+
+.quest-list button[data-filtered="false"] {
+  opacity: 0.38;
+  transition: opacity 200ms ease;
+}
+
+.quest-list button[data-filtered="false"]:hover,
+.quest-list button[data-filtered="false"]:focus-visible {
+  opacity: 0.75;
+}
+
+/* ─── CONTACT ROW & COPY BUTTON ───────────────────────────────────── */
+
+.contact-row {
+  display: flex;
+  align-items: stretch;
+}
+
+.contact-row a {
+  flex: 1;
+  min-width: 0;
+}
+
+.copy-btn {
+  flex-shrink: 0;
+  width: 42px;
+  display: grid;
+  place-items: center;
+  border: 1px solid var(--line-dim);
+  border-left: none;
+  background: rgba(255, 184, 79, 0.04);
+  color: var(--muted);
+  transition: background 140ms ease, color 140ms ease;
+}
+
+.copy-btn:hover,
+.copy-btn:focus-visible {
+  background: rgba(255, 184, 79, 0.14);
+  color: var(--amber-soft);
+  outline: 2px solid rgba(136, 216, 255, 0.62);
+  outline-offset: 2px;
+}
+
+.copy-btn.copied {
+  color: var(--green);
+  background: rgba(157, 244, 165, 0.1);
+}
+
+@keyframes copy-pop {
+  0%   { transform: scale(1); }
+  50%  { transform: scale(1.3); }
+  100% { transform: scale(1); }
+}
+
+.copy-btn.copied svg {
+  animation: copy-pop 200ms ease both;
 }
 
 @media (prefers-reduced-motion: reduce) {

@@ -1,12 +1,26 @@
 import { ExternalLink } from "lucide-react";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { experience, projects } from "../../data/portfolio";
+import type { Project } from "../../types";
 
-export function QuestsPanel() {
+interface QuestsPanelProps {
+  skillFilter: string | null;
+  onSkillFilter: (skill: string | null) => void;
+}
+
+function projectMatchesFilter(project: Project, filter: string): boolean {
+  const needle = filter.toLowerCase();
+  return [...project.stack, ...project.tags].some(
+    (t) => t.toLowerCase().includes(needle) || needle.includes(t.toLowerCase()),
+  );
+}
+
+export function QuestsPanel({ skillFilter, onSkillFilter }: QuestsPanelProps) {
   const [selectedProjectIndex, setSelectedProjectIndex] = useState(0);
   const [displayIndex, setDisplayIndex] = useState(0);
   const [collapsed, setCollapsed] = useState(false);
   const detailBodyRef = useRef<HTMLDivElement>(null);
+  const questIndexRef = useRef<HTMLElement>(null);
   const displayedProject = projects[displayIndex] ?? projects[0];
   const selectedTags = useMemo(
     () => [...new Set([...displayedProject.stack, ...displayedProject.tags])],
@@ -29,28 +43,55 @@ export function QuestsPanel() {
     detailBodyRef.current?.scrollTo({ top: 0 });
   }, [displayIndex]);
 
+  useEffect(() => {
+    if (skillFilter) {
+      questIndexRef.current?.scrollTo({ top: 0, behavior: "smooth" });
+    }
+  }, [skillFilter]);
+
   return (
     <article className="quest-layout" aria-labelledby="quests-title">
-      <section className="dossier-card quest-index">
+      <section className="dossier-card quest-index" ref={questIndexRef}>
         <p className="system-label">Quests</p>
         <h2 id="quests-title">Active project log</h2>
 
-        <div className="quest-list" role="listbox" aria-label="Project quests">
-          {projects.map((project, index) => (
+        {skillFilter ? (
+          <div className="quest-filter-banner">
+            <span>Filter: {skillFilter}</span>
             <button
-              key={project.title}
               type="button"
-              className={`anim-stagger${index === selectedProjectIndex ? " active" : ""}`}
-              style={{ animationDelay: `${index * 60}ms` }}
-              aria-selected={index === selectedProjectIndex}
-              role="option"
-              onClick={() => setSelectedProjectIndex(index)}
+              aria-label="Clear skill filter"
+              onClick={() => onSkillFilter(null)}
             >
-              <span>{String(index + 1).padStart(2, "0")}</span>
-              <strong>{project.title}</strong>
-              <small>{project.signal}</small>
+              ×
             </button>
-          ))}
+          </div>
+        ) : null}
+
+        <div className="quest-list" role="listbox" aria-label="Project quests">
+          {projects.map((project, index) => {
+            const isActive = index === selectedProjectIndex;
+            const filtered = skillFilter ? projectMatchesFilter(project, skillFilter) : null;
+            return (
+              <button
+                key={project.title}
+                type="button"
+                className={`anim-stagger${isActive ? " active" : ""}`}
+                style={{ animationDelay: `${index * 60}ms` }}
+                aria-selected={isActive}
+                role="option"
+                data-filtered={filtered === null ? undefined : String(filtered)}
+                onClick={() => {
+                  setSelectedProjectIndex(index);
+                  if (skillFilter) onSkillFilter(null);
+                }}
+              >
+                <span>{String(index + 1).padStart(2, "0")}</span>
+                <strong>{project.title}</strong>
+                <small>{project.signal}</small>
+              </button>
+            );
+          })}
         </div>
 
         <aside className="background-archive" aria-label="Background archive">

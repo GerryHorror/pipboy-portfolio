@@ -1,4 +1,6 @@
 import {
+  Check,
+  Copy,
   Download,
   Github,
   Linkedin,
@@ -6,6 +8,7 @@ import {
   Phone,
   Radio,
 } from "lucide-react";
+import { useState } from "react";
 import { contactLinks } from "../../data/portfolio";
 import type { ContactLink } from "../../types";
 
@@ -18,6 +21,15 @@ const iconMap: Record<ContactLink["type"], typeof Mail> = {
 };
 
 export function ContactPanel() {
+  const [copiedType, setCopiedType] = useState<string | null>(null);
+
+  const copyToClipboard = (type: string, value: string) => {
+    navigator.clipboard.writeText(value).then(() => {
+      setCopiedType(type);
+      setTimeout(() => setCopiedType(null), 1500);
+    }).catch(() => {});
+  };
+
   return (
     <article className="panel-grid contact-grid" aria-labelledby="contact-title">
       <section className="dossier-card intro-card">
@@ -37,20 +49,37 @@ export function ContactPanel() {
         </div>
       </section>
 
-      <section className="dossier-card contact-list">
+      <section className="dossier-card contact-list" aria-live="polite">
         {contactLinks.map((link) => {
           const Icon = iconMap[link.type];
+          const canCopy = link.type === "email" || link.type === "phone";
+          const rawValue = canCopy
+            ? link.href.replace(/^mailto:|^tel:/, "")
+            : null;
+          const isCopied = copiedType === link.type;
+
           return (
-            <a
-              key={link.type}
-              href={link.href}
-              target={link.href.startsWith("http") ? "_blank" : undefined}
-              rel={link.href.startsWith("http") ? "noreferrer" : undefined}
-              download={link.type === "cv" ? true : undefined}
-            >
-              <Icon aria-hidden="true" />
-              <span>{link.label}</span>
-            </a>
+            <div key={link.type} className="contact-row">
+              <a
+                href={link.href}
+                target={link.href.startsWith("http") ? "_blank" : undefined}
+                rel={link.href.startsWith("http") ? "noreferrer" : undefined}
+                download={link.type === "cv" ? true : undefined}
+              >
+                <Icon aria-hidden="true" />
+                <span>{link.label}</span>
+              </a>
+              {canCopy && rawValue ? (
+                <button
+                  type="button"
+                  className={`copy-btn${isCopied ? " copied" : ""}`}
+                  aria-label={isCopied ? "Copied!" : `Copy ${link.label}`}
+                  onClick={() => copyToClipboard(link.type, rawValue)}
+                >
+                  {isCopied ? <Check aria-hidden="true" /> : <Copy aria-hidden="true" />}
+                </button>
+              ) : null}
+            </div>
           );
         })}
       </section>

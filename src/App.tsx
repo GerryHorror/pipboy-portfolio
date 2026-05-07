@@ -21,6 +21,7 @@ function App() {
   const [activeTab, setActiveTab] = useState<TabId>("profile");
   const [muted, setMuted] = useState(getStoredMute);
   const [theme, setThemeState] = useState<Theme>(getStoredTheme);
+  const [activeSkillFilter, setActiveSkillFilter] = useState<string | null>(null);
 
   const selectedTab = useMemo(
     () => tabs.find((tab) => tab.id === activeTab) ?? tabs[0],
@@ -54,6 +55,16 @@ function App() {
     setActiveTab(tab);
     playSelect();
   };
+
+  const handleSkillClick = useCallback((skill: string) => {
+    setActiveSkillFilter(skill);
+    setActiveTab("quests");
+    playSelect();
+  }, [playSelect]);
+
+  const handleSkillFilter = useCallback((skill: string | null) => {
+    setActiveSkillFilter(skill);
+  }, []);
 
   const toggleMuted = () => {
     setMuted((current) => {
@@ -100,6 +111,9 @@ function App() {
                 onTabChange={handleTabChange}
                 onToggleMuted={toggleMuted}
                 onThemeChange={handleThemeChange}
+                activeSkillFilter={activeSkillFilter}
+                onSkillClick={handleSkillClick}
+                onSkillFilter={handleSkillFilter}
               />
             )}
             <div className="scanlines" aria-hidden="true" />
