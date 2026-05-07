@@ -1426,6 +1426,13 @@ svg {
   transition: opacity 200ms ease;
 }
 
+/* Strip active styling from non-matching projects so they don't look highlighted */
+.quest-list button.active[data-filtered="false"] {
+  background: rgba(255, 184, 79, 0.04);
+  border-color: var(--line-dim);
+  box-shadow: none;
+}
+
 .quest-list button[data-filtered="false"]:hover,
 .quest-list button[data-filtered="false"]:focus-visible {
   opacity: 0.75;

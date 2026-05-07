@@ -10,9 +10,15 @@ interface QuestsPanelProps {
 
 function projectMatchesFilter(project: Project, filter: string): boolean {
   const needle = filter.toLowerCase();
-  return [...project.stack, ...project.tags].some(
-    (t) => t.toLowerCase().includes(needle) || needle.includes(t.toLowerCase()),
-  );
+  return [...project.stack, ...project.tags].some((t) => {
+    const tag = t.toLowerCase();
+    if (tag.includes(needle)) return true;
+    // Check if the tag appears as a whole word inside the skill name
+    // (e.g. "android" in "android studio") but not as a prefix of a longer word
+    // (e.g. "java" must NOT match inside "javascript")
+    const escaped = tag.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+    return new RegExp(`(?<![a-zA-Z])${escaped}(?![a-zA-Z])`).test(needle);
+  });
 }
 
 export function QuestsPanel({ skillFilter, onSkillFilter }: QuestsPanelProps) {
@@ -44,8 +50,13 @@ export function QuestsPanel({ skillFilter, onSkillFilter }: QuestsPanelProps) {
   }, [displayIndex]);
 
   useEffect(() => {
-    if (skillFilter) {
-      questIndexRef.current?.scrollTo({ top: 0, behavior: "smooth" });
+    if (!skillFilter) return;
+    questIndexRef.current?.scrollTo({ top: 0, behavior: "smooth" });
+    const firstMatch = projects.findIndex((p) => projectMatchesFilter(p, skillFilter));
+    if (firstMatch !== -1) {
+      // Update both together so the collapse transition doesn't fire on initial mount
+      setSelectedProjectIndex(firstMatch);
+      setDisplayIndex(firstMatch);
     }
   }, [skillFilter]);
 
