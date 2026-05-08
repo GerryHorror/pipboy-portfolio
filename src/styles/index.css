@@ -270,7 +270,20 @@ svg {
   }
 
   .boot-content {
-    min-height: 180px;
+    min-height: 0;
+  }
+
+  .boot-lines {
+    min-height: 0;
+    margin: 10px 0;
+  }
+
+  .boot-screen {
+    padding: 16px clamp(12px, 3vw, 20px);
+  }
+
+  .boot-panel {
+    padding: 14px;
   }
 }
 
@@ -1037,9 +1050,20 @@ svg {
   }
 
   .pip-header,
-  .skill-row-header,
   .project-head {
     flex-direction: column;
+  }
+
+  .skill-list {
+    gap: 10px;
+  }
+
+  .timeline-list {
+    gap: 10px;
+  }
+
+  .condition-bar {
+    margin: 4px 0;
   }
 
   .pip-header {
@@ -1136,9 +1160,20 @@ svg {
     font-size: 0.78rem;
   }
 
-  .contact-list a,
   .project-links a {
     width: 100%;
+  }
+
+  .contact-row {
+    width: 100%;
+  }
+
+  .boot-screen {
+    padding: 12px;
+  }
+
+  .boot-panel {
+    padding: 10px 12px;
   }
 }
 
