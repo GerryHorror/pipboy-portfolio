@@ -535,6 +535,7 @@ svg {
   overflow-y: auto;
   overflow-x: hidden;
   overscroll-behavior: contain;
+  touch-action: pan-y;
   scrollbar-color: var(--amber-strong) transparent;
   border: 2px solid var(--line);
   border-inline-color: var(--line-dim);
@@ -843,6 +844,10 @@ svg {
   background: var(--amber-strong);
 }
 
+.quest-back-btn {
+  display: none;
+}
+
 .quest-detail-section {
   border-top: 1px solid var(--line-dim);
   padding-top: 12px;
@@ -1071,6 +1076,10 @@ svg {
     padding: 6px 0;
   }
 
+  .pip-header h1 {
+    overflow-wrap: break-word;
+  }
+
   .status-cluster {
     justify-content: start;
     gap: 5px;
@@ -1079,6 +1088,23 @@ svg {
   .status-cluster span {
     padding: 3px 6px;
     font-size: 0.65rem;
+  }
+
+  /* Improve readability of small HUD labels on mobile */
+  .system-label {
+    font-size: 0.75rem;
+  }
+
+  .metric-grid span,
+  .muted-line,
+  .timeline-item span,
+  .experience-card span {
+    font-size: 0.74rem;
+  }
+
+  .quest-list button small,
+  .quest-list button span {
+    font-size: 0.74rem;
   }
 
   .intro-card {
@@ -1090,7 +1116,7 @@ svg {
   }
 
   .tab-nav button {
-    min-height: 40px;
+    min-height: 44px;
     font-size: 0.82rem;
   }
 
@@ -1116,6 +1142,40 @@ svg {
     padding-right: 0;
   }
 
+  /* Mobile drill-down: show list by default, swap to detail on tap */
+  .quest-layout:not([data-mobile-detail]) .quest-detail {
+    display: none;
+  }
+
+  .quest-layout[data-mobile-detail] .quest-index {
+    display: none;
+  }
+
+  .quest-layout[data-mobile-detail] .quest-detail {
+    display: grid;
+  }
+
+  .quest-back-btn {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    width: 100%;
+    padding: 10px 0 14px;
+    border: none;
+    border-bottom: 1px solid var(--line-dim);
+    background: none;
+    color: var(--green);
+    font-size: 0.78rem;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    min-height: 44px;
+    margin-bottom: 8px;
+  }
+
+  .quest-back-btn:active {
+    opacity: 0.7;
+  }
+
   .span-two {
     grid-column: auto;
   }
@@ -1132,6 +1192,13 @@ svg {
 
   .tab-nav button {
     min-height: 44px;
+  }
+}
+
+@media (max-width: 380px) {
+  /* Single column metrics on very narrow screens to prevent truncation */
+  .metric-grid {
+    grid-template-columns: 1fr;
   }
 }
 
@@ -1156,7 +1223,7 @@ svg {
   }
 
   .tab-nav button {
-    min-height: 42px;
+    min-height: 44px;
     font-size: 0.78rem;
   }
 
@@ -1203,6 +1270,47 @@ svg {
 @media (pointer: coarse) {
   .swipe-dots {
     display: flex;
+  }
+
+  /* Tactile active feedback replacing the desktop translateY */
+  .primary-command:active,
+  .icon-command:active,
+  .tab-nav button:active,
+  .skill-tag-btn:active,
+  .theme-chip-btn:active,
+  .quest-list button:active,
+  .copy-btn:active,
+  .project-links a:active,
+  .contact-list a:active {
+    transform: scale(0.96);
+    transition: transform 80ms ease;
+  }
+
+  /* Ensure all interactive elements meet 44px minimum touch target */
+  .icon-command {
+    width: 44px;
+    height: 44px;
+  }
+
+  .copy-btn {
+    width: 44px;
+    min-height: 44px;
+  }
+
+  .theme-chip-btn {
+    min-height: 36px;
+    padding: 7px 12px;
+  }
+
+  .skill-tag-btn {
+    min-height: 36px;
+    padding: 8px 12px;
+  }
+
+  .quest-filter-banner button {
+    min-width: 36px;
+    min-height: 36px;
+    padding: 4px 8px;
   }
 }
 

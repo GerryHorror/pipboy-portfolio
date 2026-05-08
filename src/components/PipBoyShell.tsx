@@ -42,7 +42,7 @@ export function PipBoyShell({
   const handleTouchEnd = (e: React.TouchEvent) => {
     const dx = e.changedTouches[0].clientX - touchStartX.current;
     const dy = e.changedTouches[0].clientY - touchStartY.current;
-    if (Math.abs(dx) < 50 || Math.abs(dy) > 80) return;
+    if (Math.abs(dx) < 100 || Math.abs(dy) > 40) return;
     const currentIndex = tabs.findIndex((t) => t.id === activeTab);
     if (dx < 0 && currentIndex < tabs.length - 1) {
       onTabChange(tabs[currentIndex + 1].id);

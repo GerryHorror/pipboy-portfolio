@@ -25,6 +25,7 @@ export function QuestsPanel({ skillFilter, onSkillFilter }: QuestsPanelProps) {
   const [selectedProjectIndex, setSelectedProjectIndex] = useState(0);
   const [displayIndex, setDisplayIndex] = useState(0);
   const [collapsed, setCollapsed] = useState(false);
+  const [mobileDetailOpen, setMobileDetailOpen] = useState(false);
   const detailBodyRef = useRef<HTMLDivElement>(null);
   const questIndexRef = useRef<HTMLElement>(null);
   const displayedProject = projects[displayIndex] ?? projects[0];
@@ -54,14 +55,18 @@ export function QuestsPanel({ skillFilter, onSkillFilter }: QuestsPanelProps) {
     questIndexRef.current?.scrollTo({ top: 0, behavior: "smooth" });
     const firstMatch = projects.findIndex((p) => projectMatchesFilter(p, skillFilter));
     if (firstMatch !== -1) {
-      // Update both together so the collapse transition doesn't fire on initial mount
       setSelectedProjectIndex(firstMatch);
       setDisplayIndex(firstMatch);
+      setMobileDetailOpen(true);
     }
   }, [skillFilter]);
 
   return (
-    <article className="quest-layout" aria-labelledby="quests-title">
+    <article
+      className="quest-layout"
+      aria-labelledby="quests-title"
+      data-mobile-detail={mobileDetailOpen ? "" : undefined}
+    >
       <section className="dossier-card quest-index" ref={questIndexRef}>
         <p className="system-label">Quests</p>
         <h2 id="quests-title">Active project log</h2>
@@ -94,6 +99,7 @@ export function QuestsPanel({ skillFilter, onSkillFilter }: QuestsPanelProps) {
                 data-filtered={filtered === null ? undefined : String(filtered)}
                 onClick={() => {
                   setSelectedProjectIndex(index);
+                  setMobileDetailOpen(true);
                   if (skillFilter) onSkillFilter(null);
                 }}
               >
@@ -120,6 +126,14 @@ export function QuestsPanel({ skillFilter, onSkillFilter }: QuestsPanelProps) {
       </section>
 
       <section className={`dossier-card quest-detail${collapsed ? " crt-collapse" : ""}`} aria-live="polite">
+        <button
+          type="button"
+          className="quest-back-btn"
+          onClick={() => setMobileDetailOpen(false)}
+          aria-label="Back to quest list"
+        >
+          ← Back
+        </button>
         <div className="project-head">
           <div>
             <span className="quest-status">{displayedProject.status}</span>
