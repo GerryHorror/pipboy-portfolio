@@ -50,6 +50,11 @@ export function TabNav({ tabs, activeTab, onTabChange }: TabNavProps) {
           <span>{tab.label}</span>
         </button>
       ))}
+      <div className="swipe-dots" aria-hidden="true">
+        {tabs.map((tab) => (
+          <span key={tab.id} className={activeTab === tab.id ? "active" : undefined} />
+        ))}
+      </div>
     </nav>
   );
 }

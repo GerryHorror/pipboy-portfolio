@@ -52,7 +52,11 @@ export function PipBoyShell({
   };
 
   return (
-    <div className="pipboy">
+    <div
+      className="pipboy"
+      onTouchStart={handleTouchStart}
+      onTouchEnd={handleTouchEnd}
+    >
       <header className="pip-header">
         <div>
           <p className="system-label">Candidate dossier</p>
@@ -67,11 +71,7 @@ export function PipBoyShell({
 
       <TabNav tabs={tabs} activeTab={activeTab} onTabChange={onTabChange} />
 
-      <div
-        className="panel-window"
-        onTouchStart={handleTouchStart}
-        onTouchEnd={handleTouchEnd}
-      >
+      <div className="panel-window">
         <div key={activeTab} className="panel-enter">
           {activeTab === "profile" ? <ProfilePanel /> : null}
           {activeTab === "stats" ? <StatsPanel onSkillClick={onSkillClick} /> : null}
