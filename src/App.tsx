@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { BootScreen } from "./components/BootScreen";
 import { PipBoyShell } from "./components/PipBoyShell";
 import { tabs } from "./data/tabs";
@@ -16,6 +16,17 @@ const getStoredTheme = (): Theme => {
   return "amber";
 };
 
+// Pre-instantiate at module load so the browser fetches and caches audio
+// assets immediately — eliminates the new Audio() decode overhead on first click.
+const selectAudio = new Audio("/Pipboy_Select.wav");
+selectAudio.volume = 0.7;
+selectAudio.preload = "auto";
+
+const humAudio = new Audio("/PipBoy_Hum.wav");
+humAudio.loop = true;
+humAudio.volume = 0.25;
+humAudio.preload = "auto";
+
 function App() {
   const [bootComplete, setBootComplete] = useState(false);
   const [activeTab, setActiveTab] = useState<TabId>("profile");
@@ -28,27 +39,20 @@ function App() {
     [activeTab],
   );
 
-  const humRef = useRef<HTMLAudioElement | null>(null);
-
   useEffect(() => {
     if (!bootComplete) return;
-    const hum = new Audio("/PipBoy_Hum.wav");
-    hum.loop = true;
-    hum.volume = 0.25;
-    humRef.current = hum;
-    if (!muted) hum.play().catch(() => {});
+    if (!muted) humAudio.play().catch(() => {});
     return () => {
-      hum.pause();
-      humRef.current = null;
+      humAudio.pause();
+      humAudio.currentTime = 0;
     };
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [bootComplete]);
 
   const playSelect = useCallback(() => {
     if (muted) return;
-    const audio = new Audio("/Pipboy_Select.wav");
-    audio.volume = 0.7;
-    audio.play().catch(() => {});
+    selectAudio.currentTime = 0;
+    selectAudio.play().catch(() => {});
   }, [muted]);
 
   const handleTabChange = (tab: TabId) => {
@@ -70,11 +74,8 @@ function App() {
     setMuted((current) => {
       const next = !current;
       localStorage.setItem("pipboy-muted", String(next));
-      const hum = humRef.current;
-      if (hum) {
-        if (next) hum.pause();
-        else hum.play().catch(() => {});
-      }
+      if (next) humAudio.pause();
+      else humAudio.play().catch(() => {});
       return next;
     });
   };
