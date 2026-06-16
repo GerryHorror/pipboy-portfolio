@@ -35,7 +35,7 @@ export const skills: SkillGroup[] = [
   {
     label: "Languages",
     level: 88,
-    skills: ["C#", "Kotlin", "Java", "JavaScript", "HTML", "CSS"],
+    skills: ["C#", "Kotlin", "Java", "JavaScript", "TypeScript", "HTML", "CSS"],
   },
   {
     label: "Frameworks",
@@ -45,6 +45,7 @@ export const skills: SkillGroup[] = [
       "Entity Framework Core",
       "MVVM",
       "MERN stack",
+      "React",
       "REST APIs",
     ],
   },
