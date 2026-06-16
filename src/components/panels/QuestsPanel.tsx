@@ -120,6 +120,13 @@ export function QuestsPanel({ skillFilter, onSkillFilter }: QuestsPanelProps) {
               <p>
                 {item.organisation} | {item.location}
               </p>
+              {item.highlights.length > 0 && (
+                <ul>
+                  {item.highlights.map((h) => (
+                    <li key={h}>{h}</li>
+                  ))}
+                </ul>
+              )}
             </section>
           ))}
         </aside>
