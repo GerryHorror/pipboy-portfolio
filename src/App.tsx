@@ -27,12 +27,32 @@ humAudio.loop = true;
 humAudio.volume = 0.25;
 humAudio.preload = "auto";
 
+const getHashTab = (): TabId => {
+  const h = window.location.hash.slice(1);
+  return tabs.some((t) => t.id === h) ? (h as TabId) : "profile";
+};
+
+const fmtClock = () =>
+  new Date().toLocaleTimeString("en-GB", { hour: "2-digit", minute: "2-digit", second: "2-digit" });
+
 function App() {
   const [bootComplete, setBootComplete] = useState(false);
-  const [activeTab, setActiveTab] = useState<TabId>("profile");
+  const [activeTab, setActiveTab] = useState<TabId>(getHashTab);
   const [muted, setMuted] = useState(getStoredMute);
   const [theme, setThemeState] = useState<Theme>(getStoredTheme);
   const [activeSkillFilter, setActiveSkillFilter] = useState<string | null>(null);
+  const [clock, setClock] = useState(fmtClock);
+
+  useEffect(() => {
+    const id = setInterval(() => setClock(fmtClock()), 1000);
+    return () => clearInterval(id);
+  }, []);
+
+  useEffect(() => {
+    const onHashChange = () => setActiveTab(getHashTab());
+    window.addEventListener("hashchange", onHashChange);
+    return () => window.removeEventListener("hashchange", onHashChange);
+  }, []);
 
   const selectedTab = useMemo(
     () => tabs.find((tab) => tab.id === activeTab) ?? tabs[0],
@@ -57,12 +77,14 @@ function App() {
 
   const handleTabChange = (tab: TabId) => {
     setActiveTab(tab);
+    window.location.hash = tab;
     playSelect();
   };
 
   const handleSkillClick = useCallback((skill: string) => {
     setActiveSkillFilter(skill);
     setActiveTab("quests");
+    window.location.hash = "quests";
     playSelect();
   }, [playSelect]);
 
@@ -100,6 +122,7 @@ function App() {
           <div className="screen">
             <div className="screen-chrome">
               <p>PORTFOLIO_OS</p>
+              <p aria-hidden="true">{clock}</p>
               <p>{bootComplete ? selectedTab.status : "BOOT SEQUENCE"}</p>
             </div>
             {!bootComplete ? (
