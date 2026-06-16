@@ -456,13 +456,17 @@ svg {
   top: 10px;
   left: 18px;
   right: 18px;
-  display: flex;
-  justify-content: space-between;
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
   gap: 16px;
   color: var(--muted);
   font-size: 0.68rem;
   text-transform: uppercase;
   z-index: 3;
+}
+
+.screen-chrome p:last-child {
+  text-align: right;
 }
 
 .screen-chrome p {
