@@ -24,10 +24,25 @@ export function ContactPanel() {
   const [copiedType, setCopiedType] = useState<string | null>(null);
 
   const copyToClipboard = (type: string, value: string) => {
-    navigator.clipboard.writeText(value).then(() => {
+    const finish = () => {
       setCopiedType(type);
       setTimeout(() => setCopiedType(null), 1500);
-    }).catch(() => {});
+    };
+
+    if (navigator.clipboard) {
+      navigator.clipboard.writeText(value).then(finish).catch(() => {});
+      return;
+    }
+
+    // moose: execCommand is deprecated but covers HTTP and embedded WebViews (e.g. LinkedIn)
+    const el = document.createElement("textarea");
+    el.value = value;
+    el.style.cssText = "position:fixed;opacity:0;pointer-events:none";
+    document.body.appendChild(el);
+    el.focus();
+    el.select();
+    try { document.execCommand("copy"); finish(); } catch { /* silent */ }
+    document.body.removeChild(el);
   };
 
   return (
