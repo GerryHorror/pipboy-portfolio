@@ -84,32 +84,32 @@ export function QuestsPanel({ skillFilter, onSkillFilter }: QuestsPanelProps) {
           </div>
         ) : null}
 
-        <div className="quest-list" role="listbox" aria-label="Project quests">
+        <ul className="quest-list" aria-label="Project quests">
           {projects.map((project, index) => {
             const isActive = index === selectedProjectIndex;
             const filtered = skillFilter ? projectMatchesFilter(project, skillFilter) : null;
             return (
-              <button
-                key={project.title}
-                type="button"
-                className={`anim-stagger${isActive ? " active" : ""}`}
-                style={{ animationDelay: `${index * 60}ms` }}
-                aria-selected={isActive}
-                role="option"
-                data-filtered={filtered === null ? undefined : String(filtered)}
-                onClick={() => {
-                  setSelectedProjectIndex(index);
-                  setMobileDetailOpen(true);
-                  if (skillFilter) onSkillFilter(null);
-                }}
-              >
-                <span>{String(index + 1).padStart(2, "0")}</span>
-                <strong>{project.title}</strong>
-                <small>{project.signal}</small>
-              </button>
+              <li key={project.title}>
+                <button
+                  type="button"
+                  className={`anim-stagger${isActive ? " active" : ""}`}
+                  style={{ animationDelay: `${index * 60}ms` }}
+                  aria-current={isActive ? "true" : undefined}
+                  data-filtered={filtered === null ? undefined : String(filtered)}
+                  onClick={() => {
+                    setSelectedProjectIndex(index);
+                    setMobileDetailOpen(true);
+                    if (skillFilter) onSkillFilter(null);
+                  }}
+                >
+                  <span>{String(index + 1).padStart(2, "0")}</span>
+                  <strong>{project.title}</strong>
+                  <small>{project.signal}</small>
+                </button>
+              </li>
             );
           })}
-        </div>
+        </ul>
 
         <aside className="background-archive" aria-label="Background archive">
           <p className="system-label">Background archive</p>

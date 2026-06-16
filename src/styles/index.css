@@ -751,6 +751,9 @@ svg {
 .quest-list {
   display: grid;
   gap: 8px;
+  list-style: none;
+  padding: 0;
+  margin: 0;
 }
 
 .quest-list button {
