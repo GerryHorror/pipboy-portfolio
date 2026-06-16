@@ -1042,6 +1042,7 @@ svg {
 @media (max-width: 840px) {
   .app-shell {
     padding: 8px;
+    padding-bottom: max(8px, env(safe-area-inset-bottom));
   }
 
   .device-frame {
@@ -1051,6 +1052,7 @@ svg {
     border-width: 10px;
     border-radius: 20px;
     padding: 8px;
+    padding-bottom: max(8px, env(safe-area-inset-bottom));
   }
 
   .pipboy {
