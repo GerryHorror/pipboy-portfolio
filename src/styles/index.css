@@ -1682,6 +1682,42 @@ svg {
   background: rgba(157, 244, 165, 0.1);
 }
 
+.cv-preview-card {
+  padding: 0;
+  overflow: hidden;
+  box-shadow: 0 0 24px rgba(255, 184, 79, 0.12);
+}
+
+.cv-preview-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 14px;
+  border-bottom: 1px solid var(--line-dim);
+  background: rgba(255, 184, 79, 0.06);
+}
+
+.cv-preview-header .system-label {
+  margin: 0;
+}
+
+.cv-preview-close {
+  width: 28px;
+  height: 28px;
+}
+
+.cv-preview-close svg {
+  width: 14px;
+  height: 14px;
+}
+
+.cv-preview-card iframe {
+  width: 100%;
+  height: min(70vh, 600px);
+  border: none;
+  background: #fff;
+}
+
 @keyframes copy-pop {
   0%   { transform: scale(1); }
   50%  { transform: scale(1.3); }

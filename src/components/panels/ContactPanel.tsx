@@ -2,11 +2,13 @@ import {
   Check,
   Copy,
   Download,
+  Eye,
   Github,
   Linkedin,
   Mail,
   Phone,
   Radio,
+  X,
 } from "lucide-react";
 import { useState } from "react";
 import { contactLinks } from "../../data/portfolio";
@@ -22,6 +24,7 @@ const iconMap: Record<ContactLink["type"], typeof Mail> = {
 
 export function ContactPanel() {
   const [copiedType, setCopiedType] = useState<string | null>(null);
+  const [cvPreviewOpen, setCvPreviewOpen] = useState(false);
 
   const copyToClipboard = (type: string, value: string) => {
     const finish = () => {
@@ -84,6 +87,17 @@ export function ContactPanel() {
                 <Icon aria-hidden="true" />
                 <span>{link.label}</span>
               </a>
+              {link.type === "cv" ? (
+                <button
+                  type="button"
+                  className="copy-btn"
+                  aria-label={cvPreviewOpen ? "Hide CV preview" : "Preview CV"}
+                  aria-pressed={cvPreviewOpen}
+                  onClick={() => setCvPreviewOpen((open) => !open)}
+                >
+                  <Eye aria-hidden="true" />
+                </button>
+              ) : null}
               {canCopy && rawValue ? (
                 <button
                   type="button"
@@ -98,6 +112,23 @@ export function ContactPanel() {
           );
         })}
       </section>
+
+      {cvPreviewOpen ? (
+        <section className="dossier-card span-two cv-preview-card" aria-label="CV preview">
+          <header className="cv-preview-header">
+            <span className="system-label">CV_PREVIEW.PDF</span>
+            <button
+              type="button"
+              className="icon-command cv-preview-close"
+              aria-label="Close CV preview"
+              onClick={() => setCvPreviewOpen(false)}
+            >
+              <X aria-hidden="true" />
+            </button>
+          </header>
+          <iframe src="/Gerard_Blankenberg_CV.pdf#toolbar=0&navpanes=0" title="CV preview" />
+        </section>
+      ) : null}
     </article>
   );
 }
