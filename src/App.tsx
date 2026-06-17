@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import { BootScreen } from "./components/BootScreen";
 import { PipBoyShell } from "./components/PipBoyShell";
 import { tabs } from "./data/tabs";
@@ -54,10 +54,7 @@ function App() {
     return () => window.removeEventListener("hashchange", onHashChange);
   }, []);
 
-  const selectedTab = useMemo(
-    () => tabs.find((tab) => tab.id === activeTab) ?? tabs[0],
-    [activeTab],
-  );
+  const selectedTab = tabs.find((tab) => tab.id === activeTab) ?? tabs[0];
 
   useEffect(() => {
     if (!bootComplete) return;
@@ -69,11 +66,11 @@ function App() {
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [bootComplete]);
 
-  const playSelect = useCallback(() => {
+  const playSelect = () => {
     if (muted) return;
     selectAudio.currentTime = 0;
     selectAudio.play().catch(() => {});
-  }, [muted]);
+  };
 
   const handleTabChange = (tab: TabId) => {
     setActiveTab(tab);
@@ -81,16 +78,12 @@ function App() {
     playSelect();
   };
 
-  const handleSkillClick = useCallback((skill: string) => {
+  const handleSkillClick = (skill: string) => {
     setActiveSkillFilter(skill);
     setActiveTab("quests");
     window.location.hash = "quests";
     playSelect();
-  }, [playSelect]);
-
-  const handleSkillFilter = useCallback((skill: string | null) => {
-    setActiveSkillFilter(skill);
-  }, []);
+  };
 
   const toggleMuted = () => {
     setMuted((current) => {
@@ -137,7 +130,7 @@ function App() {
                 onThemeChange={handleThemeChange}
                 activeSkillFilter={activeSkillFilter}
                 onSkillClick={handleSkillClick}
-                onSkillFilter={handleSkillFilter}
+                onSkillFilter={setActiveSkillFilter}
               />
             )}
             <div className="scanlines" aria-hidden="true" />

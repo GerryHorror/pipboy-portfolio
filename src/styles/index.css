@@ -570,8 +570,7 @@ svg {
   align-items: stretch;
 }
 
-.dossier-card,
-.project-card {
+.dossier-card {
   border: 1px solid var(--line-dim);
   background: rgba(10, 7, 4, 0.72);
   padding: clamp(12px, 1.5vw, 17px);
@@ -588,7 +587,6 @@ svg {
 .lead,
 .project-summary,
 .dossier-card p,
-.project-card li,
 .experience-card li {
   line-height: 1.58;
 }
@@ -720,7 +718,6 @@ svg {
 }
 
 .timeline-item h3,
-.project-card h3,
 .experience-card h3 {
   margin: 6px 0 4px;
   font-size: 0.94rem;
@@ -915,7 +912,6 @@ svg {
   outline-offset: 2px;
 }
 
-.project-card ul,
 .experience-card ul {
   margin: 12px 0;
   padding-left: 18px;
@@ -1226,8 +1222,7 @@ svg {
     padding: 10px;
   }
 
-  .dossier-card,
-  .project-card {
+  .dossier-card {
     padding: 12px;
   }
 
