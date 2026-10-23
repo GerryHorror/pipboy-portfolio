@@ -77,7 +77,7 @@ export function ProfilePanel() {
 
       <section className="dossier-card avatar-card" aria-label="Candidate snapshot">
         <div className="avatar-ring">
-          <img src="/vault_me.png" alt="Gerard illustrated as a Vault-Tec character" />
+          <img src="/vault_me.webp" width="400" height="267" alt="Gerard illustrated as a Vault-Tec character" />
         </div>
         <div className="metric-grid">
           {profile.metrics.map((metric) => (
