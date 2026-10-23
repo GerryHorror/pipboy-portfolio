@@ -38,7 +38,7 @@ export function BootScreen({ muted, onComplete }: BootScreenProps) {
   // Play audio; fire onComplete when it ends naturally
   useEffect(() => {
     if (muted) return;
-    const audio = new Audio("/PipBoy_BootSequence.wav");
+    const audio = new Audio("/PipBoy_BootSequence.mp3");
     audio.volume = 0.6;
     const handleEnded = () => onCompleteRef.current();
     audio.addEventListener("ended", handleEnded);

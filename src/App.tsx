@@ -23,7 +23,7 @@ const getStoredTheme = (): Theme => {
 
 // Pre-instantiate at module load so the browser fetches and caches audio
 // assets immediately — eliminates the new Audio() decode overhead on first click.
-const selectAudio = new Audio("/Pipboy_Select.wav");
+const selectAudio = new Audio("/Pipboy_Select.mp3");
 selectAudio.volume = 0.7;
 selectAudio.preload = "auto";
 
