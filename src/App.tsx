@@ -4,14 +4,19 @@ import { PipBoyShell } from "./components/PipBoyShell";
 import { tabs } from "./data/tabs";
 import type { TabId, Theme } from "./types";
 
-const getStoredMute = () => {
-  if (typeof localStorage === "undefined") return false;
-  return localStorage.getItem("pipboy-muted") === "true";
+// Storage access throws when blocked (private mode, in-app browsers), so prefs just don't persist there.
+const readPref = (key: string) => {
+  try { return localStorage.getItem(key); } catch { return null; }
 };
 
+const savePref = (key: string, value: string) => {
+  try { localStorage.setItem(key, value); } catch { /* silent */ }
+};
+
+const getStoredMute = () => readPref("pipboy-muted") === "true";
+
 const getStoredTheme = (): Theme => {
-  if (typeof localStorage === "undefined") return "amber";
-  const v = localStorage.getItem("pipboy-theme");
+  const v = readPref("pipboy-theme");
   if (v === "green" || v === "pride") return v;
   return "amber";
 };
@@ -88,7 +93,7 @@ function App() {
   const toggleMuted = () => {
     setMuted((current) => {
       const next = !current;
-      localStorage.setItem("pipboy-muted", String(next));
+      savePref("pipboy-muted", String(next));
       if (next) humAudio.pause();
       else humAudio.play().catch(() => {});
       return next;
@@ -96,7 +101,7 @@ function App() {
   };
 
   const handleThemeChange = (t: Theme) => {
-    localStorage.setItem("pipboy-theme", t);
+    savePref("pipboy-theme", t);
     setThemeState(t);
   };
 
