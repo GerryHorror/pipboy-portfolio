@@ -31,7 +31,7 @@ selectAudio.preload = "auto";
 
 const humAudio = new Audio("/PipBoy_Hum.wav");
 humAudio.loop = true;
-humAudio.volume = 0.25;
+humAudio.volume = 0.65;
 humAudio.preload = "auto";
 
 const getHashTab = (): TabId => {
