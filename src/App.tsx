@@ -5,12 +5,14 @@ import { tabs } from "./data/tabs";
 import type { TabId, Theme } from "./types";
 
 // Storage access throws when blocked (private mode, in-app browsers), so prefs just don't persist there.
-const readPref = (key: string) => {
-  try { return localStorage.getItem(key); } catch { return null; }
+type Store = "localStorage" | "sessionStorage";
+
+const readPref = (key: string, store: Store = "localStorage") => {
+  try { return window[store].getItem(key); } catch { return null; }
 };
 
-const savePref = (key: string, value: string) => {
-  try { localStorage.setItem(key, value); } catch { /* silent */ }
+const savePref = (key: string, value: string, store: Store = "localStorage") => {
+  try { window[store].setItem(key, value); } catch { /* silent */ }
 };
 
 const getStoredMute = () => readPref("pipboy-muted") === "true";
@@ -41,7 +43,8 @@ const fmtClock = () =>
   new Date().toLocaleTimeString("en-GB", { hour: "2-digit", minute: "2-digit", second: "2-digit" });
 
 function App() {
-  const [bootComplete, setBootComplete] = useState(false);
+  // Boot plays once per browser session; reloads go straight to the dossier.
+  const [bootComplete, setBootComplete] = useState(() => readPref("pipboy-booted", "sessionStorage") === "1");
   const [activeTab, setActiveTab] = useState<TabId>(getHashTab);
   const [muted, setMuted] = useState(getStoredMute);
   const [theme, setThemeState] = useState<Theme>(getStoredTheme);
@@ -63,7 +66,10 @@ function App() {
 
   useEffect(() => {
     if (!bootComplete) return;
-    if (!muted) humAudio.play().catch(() => {});
+    // Autoplay is blocked without a prior gesture (e.g. boot skipped on reload), so retry on first tap.
+    if (!muted) humAudio.play().catch(() =>
+      document.addEventListener("pointerdown", () => humAudio.play().catch(() => {}), { once: true }),
+    );
     return () => {
       humAudio.pause();
       humAudio.currentTime = 0;
@@ -124,7 +130,13 @@ function App() {
               <p>{bootComplete ? selectedTab.status : "BOOT SEQUENCE"}</p>
             </div>
             {!bootComplete ? (
-              <BootScreen muted={muted} onComplete={() => setBootComplete(true)} />
+              <BootScreen
+                muted={muted}
+                onComplete={() => {
+                  savePref("pipboy-booted", "1", "sessionStorage");
+                  setBootComplete(true);
+                }}
+              />
             ) : (
               <PipBoyShell
                 activeTab={activeTab}
