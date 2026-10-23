@@ -29,36 +29,55 @@ const LINE_INTERVAL_MS = 350;
 
 const warnResults = new Set(["DETECTED", "LOADING"]);
 
+const bootAudio = new Audio("/PipBoy_BootSequence.mp3");
+bootAudio.volume = 0.6;
+bootAudio.preload = "auto";
+
 export function BootScreen({ muted, onComplete }: BootScreenProps) {
+  const [started, setStarted] = useState(false);
   const [visibleLines, setVisibleLines] = useState(1);
   const isComplete = visibleLines >= bootLines.length;
   const onCompleteRef = useRef(onComplete);
   onCompleteRef.current = onComplete;
 
-  // Play audio; fire onComplete when it ends naturally
+  // Browsers block sound until the visitor interacts, so the boot waits for a key or tap.
+  // play() must run inside that handler, not an effect, or iOS Safari still blocks it.
+  const start = () => {
+    setStarted(true);
+    if (!muted) bootAudio.play().catch(() => {});
+  };
+
   useEffect(() => {
-    if (muted) return;
-    const audio = new Audio("/PipBoy_BootSequence.wav");
-    audio.volume = 0.6;
-    const handleEnded = () => onCompleteRef.current();
-    audio.addEventListener("ended", handleEnded);
-    audio.play().catch(() => {});
-    return () => {
-      audio.removeEventListener("ended", handleEnded);
-      audio.pause();
-      audio.currentTime = 0;
+    if (started) return;
+    const onKey = (e: KeyboardEvent) => {
+      // Buttons handle their own Enter/Space; Tab and shortcuts shouldn't boot.
+      if (e.target instanceof HTMLButtonElement || e.key === "Tab" || e.metaKey || e.ctrlKey || e.altKey) return;
+      start();
     };
-  }, [muted]);
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  });
+
+  // Fire onComplete when the audio ends naturally
+  useEffect(() => {
+    const handleEnded = () => onCompleteRef.current();
+    bootAudio.addEventListener("ended", handleEnded);
+    return () => {
+      bootAudio.removeEventListener("ended", handleEnded);
+      bootAudio.pause();
+      bootAudio.currentTime = 0;
+    };
+  }, []);
 
   // Line reveal
   useEffect(() => {
-    if (isComplete) return;
+    if (!started || isComplete) return;
     const t = window.setTimeout(
       () => setVisibleLines((c) => c + 1),
       LINE_INTERVAL_MS,
     );
     return () => window.clearTimeout(t);
-  }, [visibleLines, isComplete]);
+  }, [started, visibleLines, isComplete]);
 
   // When muted, complete shortly after all lines are shown
   useEffect(() => {
@@ -69,9 +88,10 @@ export function BootScreen({ muted, onComplete }: BootScreenProps) {
 
   // Safety fallback: complete even if audio never fires (autoplay blocked, etc.)
   useEffect(() => {
+    if (!started) return;
     const t = window.setTimeout(() => onCompleteRef.current(), 6500);
     return () => window.clearTimeout(t);
-  }, []);
+  }, [started]);
 
   return (
     <section className="boot-screen" aria-label="Portfolio boot sequence">
@@ -91,41 +111,48 @@ export function BootScreen({ muted, onComplete }: BootScreenProps) {
           </figure>
         </div>
         <div className="boot-content">
-          <div className="boot-lines" aria-live="polite">
-            {bootLines.slice(0, visibleLines).map((line, i) => {
-              const isLast = i === visibleLines - 1;
-              const cursor =
-                isLast && !isComplete ? (
-                  <span className="boot-cursor" aria-hidden="true">
-                    █
-                  </span>
-                ) : null;
-
-              if (line.type === "check") {
+          {!started ? (
+            <button className="primary-command boot-power" type="button" onClick={start}>
+              Press any key to boot
+              <span className="boot-cursor" aria-hidden="true">█</span>
+            </button>
+          ) : (
+            <div className="boot-lines" aria-live="polite">
+              {bootLines.slice(0, visibleLines).map((line, i) => {
+                const isLast = i === visibleLines - 1;
+                const cursor =
+                  isLast && !isComplete ? (
+                    <span className="boot-cursor" aria-hidden="true">
+                      █
+                    </span>
+                  ) : null;
+  
+                if (line.type === "check") {
+                  return (
+                    <p key={line.text} className="boot-check-line">
+                      <span className="boot-check-label">{line.text}</span>
+                      {!isLast || isComplete ? (
+                        <span
+                          className={`boot-check-result${warnResults.has(line.result ?? "") ? " warn" : ""}`}
+                        >
+                          {line.result}
+                        </span>
+                      ) : (
+                        cursor
+                      )}
+                    </p>
+                  );
+                }
+  
                 return (
-                  <p key={line.text} className="boot-check-line">
-                    <span className="boot-check-label">{line.text}</span>
-                    {!isLast || isComplete ? (
-                      <span
-                        className={`boot-check-result${warnResults.has(line.result ?? "") ? " warn" : ""}`}
-                      >
-                        {line.result}
-                      </span>
-                    ) : (
-                      cursor
-                    )}
+                  <p key={line.text}>
+                    <span>&gt;</span> {line.text}
+                    {cursor}
                   </p>
                 );
-              }
-
-              return (
-                <p key={line.text}>
-                  <span>&gt;</span> {line.text}
-                  {cursor}
-                </p>
-              );
-            })}
-          </div>
+              })}
+            </div>
+          )}
         </div>
       </div>
       <button className="primary-command boot-skip" type="button" onClick={onComplete}>
