@@ -160,6 +160,10 @@ svg {
   right: clamp(16px, 2.4vw, 30px);
 }
 
+.boot-power {
+  justify-self: start;
+}
+
 .boot-identity {
   display: grid;
   grid-template-columns: minmax(0, 1fr) auto;
