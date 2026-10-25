@@ -24,12 +24,12 @@ const bootLines: BootLine[] = [
   { type: "portfolio", text: "CONTACT CHANNELS READY" },
 ];
 
-// Lines spread across ~3.5s so they finish before the 5s audio ends
-const LINE_INTERVAL_MS = 350;
+// Last line lands at ~3.9s, just before the 4.3s audio ends
+const LINE_INTERVAL_MS = 430;
 
 const warnResults = new Set(["DETECTED", "LOADING"]);
 
-const bootAudio = new Audio("/PipBoy_BootSequence.mp3");
+const bootAudio = new Audio("/PipBoy_Boot.mp3");
 bootAudio.volume = 0.6;
 bootAudio.preload = "auto";
 
